@@ -1,0 +1,49 @@
+body{
+	background-color: gray;
+	background-size: vh;
+	background-attachment: fixed;
+	margin: 0;
+	/*font-family: monospace;*/
+}
+
+form{
+	width: 450px;
+	margin: auto;
+	background: rgba(255, 177, 31, 4);
+	padding: 10px 20px;
+	box-sizing: border-box;
+	margin-top: 20px;
+	border-radius: 7px;
+}
+
+h1{
+	color: black;
+	text-align: center;
+	margin: 0;
+	font-size: 30px;
+	margin-bottom: 20px;
+}
+
+input{
+	width: 50%;
+	margin-bottom: 20px;
+	padding: 7px;
+	font-size: border-box;
+	font-size: 13px;
+}
+
+#button{
+	background: orchid;
+	color: black;
+	padding: 20px;
+}
+
+#boton:hover{
+	cursor: pointer;
+}
+
+@media (max-width:450px){
+	form{
+		width: 100%;
+	}
+}
