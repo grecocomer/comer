@@ -35,7 +35,6 @@
                                     <th>no_ext</th>
                                     <th>colonia</th>
                                     <th>localidad</th>
-                                    <th>municipio</th>
                                     <th>codigo postal</th>
                                     <th>estado</th>
                                     <th>Operaciones</th>
@@ -59,7 +58,6 @@
                                 <td>{{$em->no_int}}</td>
                                 <td>{{$em->colemp}}</td>
                                 <td>{{$em->locaemp}}</td>
-                                <td>{{$em->munemp}}</td>
                                 <td>{{$em->cp}}</td>
                                 <td>{{$em->gene}}</td>
                                     <!--aqui me quede sigue la eliminacion-->

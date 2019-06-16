@@ -67,10 +67,9 @@ return view ('empleado.altaempleado')->with('estados', $estados)
         'calle_emp'=>'required|regex:/^[\pL\s\-]+$/u',
         'no_ext'=>'required|numeric',
         'no_int'=>'required|numeric',
-        'rfc'=>'required|regex:/^[A-Z]{4}[0-9]{6}[A-Z,0-9]{3}$/u',
+        //'rfc'=>'required|regex:/^[A-Z]{4}[0-9]{6}[A-Z,0-9]{3}$/u',
         'colemp'=>'required|regex:/^[\pL\s\-]+$/u',
         'locaemp'=>'required|regex:/^[\pL\s\-]+$/u',
-        'munemp'=>'required|regex:/^[\pL\s\-]+$/u',
         'cp'=>'regex:/^[0-9]{5}$/',
         //'cp'=>'regex:/^[0-9][A-Z][A-Z,a-z]*{5}$/',sirve para 1 numero,1 letra,1 o varias letras y un numero por
         // su terminacion 5
@@ -111,7 +110,6 @@ return view ('empleado.altaempleado')->with('estados', $estados)
       $em -> rfc = $request->rfc;
       $em -> colemp = $request->colemp;
       $em -> locaemp = $request->locaemp;
-      $em -> munemp = $request->munemp;
       $em -> cp = $request -> cp;
       $em -> id_es = $request -> id_es;
       $em -> save();
@@ -139,9 +137,11 @@ return view ('empleado.altaempleado')->with('estados', $estados)
       // rutas para mandar a llamar la vista 1.-carpeta 2.-nombre de la vista
       //return view ('empleado.reporteemp')->with('empleados',$empleados);
 
-      $res=\DB::select("SELECT em.id_emp, em.nombre_emp, em.apa_emp, em.ama_emp, em.rfc, em.archivo,em.telemp,
-       em.correo, em.calle_emp, em.no_ext, em.no_int, em.colemp, em.locaemp,  em.munemp,
-      em.cp, g.estado as gene, em.deleted_at FROM empleados as em INNER JOIN estados as g ON em.id_es = g.id_es");
+$res=\DB::select("SELECT em.id_emp, em.nombre_emp, em.apa_emp, em.ama_emp, em.rfc,
+                  em.archivo,em.telemp,em.correo,em.calle_emp, em.no_ext, em.no_int,
+                  em.colemp, em.locaemp,em.cp, g.estado AS gene, em.deleted_at 
+                  FROM empleados AS em
+                  INNER JOIN estados AS g ON em.id_es = g.id_es");
 
    //   rutas para mandar a llamar la vista 1.-carpeta 2.-nombre de la vista
      return view ('empleado.reporteemp')->with('empleados',$res);
@@ -236,7 +236,7 @@ return view ('empleado.altaempleado')->with('estados', $estados)
       $no_int = $request->no_int;
       $colemp = $request->colemp;
       $locaemp = $request->locaemp;
-      $munemp = $request->muncli;
+     // $munemp = $request->muncli;
       $cp = $request->cp;
 
   
@@ -248,7 +248,7 @@ return view ('empleado.altaempleado')->with('estados', $estados)
         'nombre_emp'=>'required|regex:/^[\pL\s\-]+$/u',
         'apa_emp'=>'required|regex:/^[\pL\s\-]+$/u',
         'ama_emp'=>'required|regex:/^[\pL\s\-]+$/u',
-        'rfc'=>'required|regex:/^[A-Z]{4}[0-9]{6}[A-Z,0-9]{3}$/u',
+       'rfc'=>'required|regex:/^[A-Z]{4}[0-9]{6}[A-Z,0-9]{3}$/u',
         'correo'=>'required|email',
         'telemp'=>'required|numeric',
         'calle_emp'=>'required|regex:/^[\pL\s\-]+$/u',
@@ -256,7 +256,7 @@ return view ('empleado.altaempleado')->with('estados', $estados)
         'no_int'=>'required|numeric',
         'colemp'=>'required|regex:/^[\pL\s\-]+$/u',
         'locaemp'=>'required|regex:/^[\pL\s\-]+$/u',
-        'munemp'=>'required|regex:/^[\pL\s\-]+$/u',
+     //   'munemp'=>'required|regex:/^[\pL\s\-]+$/u',
         'cp'=>'regex:/^[0-9]{5}$/',
         'Archivo' => 'image|mimes:jpg,jpeg,gif,png'
       ]);   
@@ -276,30 +276,26 @@ return view ('empleado.altaempleado')->with('estados', $estados)
 
 // insertar datos
 $emp = empleados::find($id_emp);
+$emp->id_emp = $request->id_emp;
 if ($file!="")
 {
   $emp->archivo=$img2;
 }
-
-// $maest -> archivo =$img2;
-      // insertar datos
-     //$cli = new clientes;
-    //  $cli -> archivo =$img2;
-    $emp -> id_emp = $request->id_emp;
-    $emp -> nombre_emp = $request->nombre_emp;
-    $emp -> apa_emp= $request->apa_emp;
-    $emp -> ama_emp = $request->ama_emp;
-    $emp -> rfc = $request->rfc;
-  // $emp -> archivo = $img2;
-    $emp -> correo = $request->correo;
-    $emp -> telemp = $request->telemp;
-    $emp -> genero = $request->genero;
-    $emp -> calle_emp = $request->calle_emp;
-    $emp -> no_ext = $request->no_ext;
-    $emp -> no_int = $request->no_int;
-    $emp -> colemp = $request->colemp;
-    $emp -> locaemp = $request->locaemp;
-    $emp -> munemp = $request->munemp;
+    $emp->id_emp = $request->id_emp;
+    $emp ->nombre_emp = $request->nombre_emp;
+    $emp ->apa_emp= $request->apa_emp;
+    $emp ->ama_emp = $request->ama_emp;
+    $emp ->rfc = $request->rfc;
+  //  $emp ->archivo = $request->$img2;
+    $emp ->correo = $request->correo;
+    $emp ->telemp = $request->telemp;
+    $emp ->genero = $request->genero;
+    $emp ->calle_emp = $request->calle_emp;
+    $emp ->no_ext = $request->no_ext;
+    $emp ->no_int = $request->no_int;
+    $emp ->colemp = $request->colemp;
+    $emp ->locaemp = $request->locaemp;
+  //  $emp -> munemp = $request->munemp;
     $emp -> cp = $request -> cp;
     $emp -> id_es = $request -> id_es;
       $emp -> save();

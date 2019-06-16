@@ -172,16 +172,7 @@
                 </div>
               </div>
 
-              @if($errors->first('munemp'))
-              <i>{{$errors->first('munemp')}}</i>
-              @endif
-              <div class="form-group row">
-                <label class="col-lg-4 col-form-label" for="mun">Municipio: <span class="text-danger">*</span></label>
-                <div class="col-lg-6">
-                  <input class="form-control" id="mun" type='text' name='munemp' value="{{$empleados->munemp}}">
-                </div>
-              </div>
-
+              
               <div class="form-group row">
                 <label class="col-lg-4 col-form-label" for="Seleccione estado">Seleccione
                   su Estado: <span class="text-danger">*</span></label>
