@@ -41,7 +41,6 @@
                                         <th>no_ext</th>
                                         <th>colonia</th>
                                         <th>localidad</th>
-                                        <th>municipio</th>
                                         <th>genero</th>
                                         <th>codigo postal</th>
                                         <th>estado</th>
@@ -65,7 +64,6 @@
                                         <td>{{$prov->no_int}}</td>
                                         <td>{{$prov->col_prov}}</td>
                                         <td>{{$prov->loca_prov}}</td>
-                                        <td>{{$prov->mun_prov}}</td>
                                         <td>{{$prov->genero}}</td>
                                         <td>{{$prov->cp}}</td>
                                         <td>{{$prov->s}}</td>

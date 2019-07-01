@@ -33,7 +33,17 @@ public function altaproveedor()
   $clavequesigue = proveedores::orderBy('id_prov','desc')
   ->take(1)
   ->get();
-   $idv = $clavequesigue[0]->id_prov+1;
+  
+
+        if (count($clavequesigue)==0)
+      {
+      $idv = 1;
+      }
+      else
+      {
+      $idv= $clavequesigue[0]->id_prov+1;
+      }
+
 
    //muestra el combo con los datos activos en la base de datos.
   $estados = estados::where('activo','si')
@@ -41,8 +51,10 @@ public function altaproveedor()
 ->get();
 // DESPUES DE QUE VERIFICA TODOS LOS DATOS MANDA A LLAMAR A LA VISTA
 //return $sexo;
-return view ('proveedor.altaproveedor')->with('estados', $estados)
-                               ->with('idv',$idv);
+return view ('proveedor.altaproveedor')
+->with('idv',$idv)
+->with('estados', $estados);
+
                               }
                               else
                               {
@@ -71,7 +83,6 @@ public function guardaproveedor(Request $request)
         'no_int'=>'required|numeric',
         'col_prov'=>'required|regex:/^[\pL\s\-]+$/u',
         'loca_prov'=>'required|regex:/^[\pL\s\-]+$/u',
-        'mun_prov'=>'required|regex:/^[\pL\s\-]+$/u',
         'cp'=>'regex:/^[0-9]{5}$/',
         'archivo' => 'image|mimes:jpg,jpeg,gif,png'
       ]);   
@@ -109,7 +120,6 @@ public function guardaproveedor(Request $request)
       $pro-> no_int = $request->no_int;
       $pro-> col_prov = $request->col_prov;
       $pro-> loca_prov = $request->loca_prov;
-      $pro-> mun_prov = $request->mun_prov;
       $pro-> cp = $request -> cp;
       $pro-> id_es = $request -> id_es;
       $pro-> save();
@@ -136,7 +146,7 @@ public function reporteproveedor()
   //$proveedores = proveedores::orderBy('nombre_prov','asc')->get();
 
   $jiovani=\DB::select("SELECT p.id_prov, p.nombre_prov, p.apa_prov, p.ama_prov, p.archivo, p.correo_prov,
-  p.tel_prov, p.calle_prov, p.no_ext, p.no_int, p.col_prov, p. loca_prov, p.mun_prov, p.genero,
+  p.tel_prov, p.calle_prov, p.no_ext, p.no_int, p.col_prov, p. loca_prov, p.genero,
   p.cp, g.estado as s, p.deleted_at FROM proveedores as p INNER JOIN estados as g ON p.id_es = g.id_es");
 
   // rutas para mandar a llamar la vista 1.-carpeta 2.-nombre de la vista
@@ -230,7 +240,6 @@ public function restaurarp($id_prov)
       $no_int = $request->no_int;
       $col_prov = $request->col_prov;
       $loca_prov = $request->loca_prov;
-      $mun_prov = $request->mun_prov;
       $cp = $request->cp;
       //validaciones del formulario
 
@@ -246,7 +255,6 @@ public function restaurarp($id_prov)
         'no_int'=>'required|numeric',
         'col_prov'=>'required|regex:/^[\pL\s\-]+$/u',
         'loca_prov'=>'required|regex:/^[\pL\s\-]+$/u',
-        'mun_prov'=>'required|regex:/^[\pL\s\-]+$/u',
         'cp'=>'regex:/^[0-9]{5}$/',
         'archivo' => 'image|mimes:jpg,jpeg,gif,png'
       ]);   
@@ -271,25 +279,22 @@ public function restaurarp($id_prov)
         }
 
       // insertar datos
-     // $pro = new proveedores;
-    //  $cli -> archivo =$img2;
-      $pro -> id_prov = $request->id_prov;
-      $pro -> nombre_prov = $request->nombre_prov;
-      $pro -> apa_prov = $request->apa_prov;
-      $pro -> ama_prov = $request->ama_prov;
+      $pro ->id_prov = $request->id_prov;
+      $pro ->nombre_prov = $request->nombre_prov;
+      $pro ->apa_prov = $request->apa_prov;
+      $pro ->ama_prov = $request->ama_prov;
      // $pro -> archivo = $img2;
-      $pro-> correo_prov = $request->correo_prov;
-      $pro -> tel_prov = $request->tel_prov;
-      $pro-> calle_prov = $request->calle_prov;
-      $pro-> no_ext = $request->no_ext;
-      $pro-> no_int = $request->no_int;
-      $pro-> col_prov = $request->col_prov;
-      $pro-> loca_prov = $request->loca_prov;
-      $pro-> mun_prov = $request->mun_prov;
-      $pro-> genero = $request->genero;
-      $pro-> cp = $request -> cp;
-      $pro-> id_es = $request -> id_es;
-      $pro-> save();
+      $pro->correo_prov = $request->correo_prov;
+      $pro ->tel_prov = $request->tel_prov;
+      $pro->calle_prov = $request->calle_prov;
+      $pro->no_ext = $request->no_ext;
+      $pro->no_int = $request->no_int;
+      $pro->col_prov = $request->col_prov;
+      $pro->loca_prov = $request->loca_prov;
+      $pro->genero = $request->genero;
+      $pro->cp = $request -> cp;
+      $pro->id_es = $request -> id_es;
+      $pro->save();
 
       $titulo = "MODIFICACION DEL PROVEEDOR";
       $mensaje1 = "El Proveedor fue modificado correctamente";

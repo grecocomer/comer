@@ -28,7 +28,7 @@ class conempleado extends Controller
       // aqui esta el error
       // sirve para hacer que el cuadro de texto  siempre tenga el id lleno, siempre y cuando tengas tegristros
       // en la base de datos.
-    $clavequesiguee = empleados ::orderBy('id_emp','desc')
+    $clavequesiguee = empleados::withTrashed()->orderBy('id_emp','desc')
     ->take(1)
     ->get();
      $idc = $clavequesiguee[0]->id_emp+1;
@@ -67,7 +67,7 @@ return view ('empleado.altaempleado')->with('estados', $estados)
         'calle_emp'=>'required|regex:/^[\pL\s\-]+$/u',
         'no_ext'=>'required|numeric',
         'no_int'=>'required|numeric',
-        //'rfc'=>'required|regex:/^[A-Z]{4}[0-9]{6}[A-Z,0-9]{3}$/u',
+        'rfc'=>'required|regex:/^[A-Z]{4}[0-9]{6}[A-Z,0-9]{3}$/u',
         'colemp'=>'required|regex:/^[\pL\s\-]+$/u',
         'locaemp'=>'required|regex:/^[\pL\s\-]+$/u',
         'cp'=>'regex:/^[0-9]{5}$/',

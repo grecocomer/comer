@@ -26,7 +26,7 @@ class concliente extends Controller
       // aqui esta el error
       // sirve para hacer que el cuadro de texto  siempre tenga el id lleno, siempre y cuando tengas tegristros
       // en la base de datos.
-      $clavequesigue = clientes::orderBy('id','desc')
+      $clavequesigue = clientes::withTrashed()->orderBy('id','desc')
       ->take(1)
       ->get();
        $idc = $clavequesigue[0]->id+1;
@@ -37,14 +37,15 @@ class concliente extends Controller
     ->get();
 // DESPUES DE QUE VERIFICA TODOS LOS DATOS MANDA A LLAMAR A LA VISTA
 //return $sexo;
-return view ('cliente.altacliente')->with('estados', $estados)
-                                   ->with('idc',$idc);
-                                  }
-                                  else
-                                  {
-                                    Session::flash('error', 'El usuario esta desactivado, favor de consultar a su administrador');
-                                   return redirect()->route('login');
-                                  }
+return view ('cliente.altacliente')
+->with('estados', $estados)
+  ->with('idc',$idc);
+                                    }
+                                    else
+                                    {
+                                      Session::flash('error', 'El usuario esta desactivado, favor de consultar a su administrador');
+                                    return redirect()->route('login');
+                                    }
     }
   
   
@@ -263,48 +264,44 @@ return view ('cliente.altacliente')->with('estados', $estados)
         'locacli'=>'required|regex:/^[\pL\s\-]+$/u',
         'muncli'=>'required|regex:/^[\pL\s\-]+$/u',
         'cp'=>'regex:/^[0-9]{5}$/',
-        'Archivo' => 'image|mimes:jpg,jpeg,gif,png,jpg,JPG'
+        'archivo'=>'image|mimes:jpeg,png,gif,jpg'
       ]);   
       
-        //$file => c:/>user/images/  ruta de la imagen
-        $file = $request->file('Archivo');
-        if($file!=""){
-        //ldate  => 20180928_063455_
-        $ldate = date('Ymd_His_');
-        //$img = normita-jpg
-        $img = $file->getClientOriginalName();
-        // img
-        $img2 = $ldate.$img;
-        //imagen predefinida para el cliente
-        \Storage::disk('local')->put($img2, \File::get($file));
-        }
+        
+      $file = $request->file('Archivo');
+      if($file!="")
+      {	 
+      $ldate = date('Ymd_His_');
+      $img = $file->getClientOriginalName();
+      $img2 = $ldate.$img;
+      \Storage::disk('local')->put($img2, \File::get($file)); 
+      }
 
-// insertar datos
-$cli = clientes::find($id);
-if ($file!="")
-{
-  $cli->archivo=$img2;
-}
-      // insertar datos
-     //$cli = new clientes;
-    //  $cli -> archivo =$img2;
-    $cli -> id = $request->id;
-    $cli -> nombrecli = $request->nombrecli;
-    $cli -> apacli = $request->apacli;
-    $cli -> amacli = $request->amacli;
-   //$cli -> Archivo = $img2;
-    $cli -> correocli = $request->correocli;
-    $cli -> telcli = $request->telcli;
-    $cli -> genero = $request->genero;
-    $cli -> callecli = $request->callecli;
-    $cli -> no_ext = $request->no_ext;
-    $cli -> no_int = $request->no_int;
-    $cli -> colcli = $request->colcli;
-    $cli -> locacli = $request->locacli;
-    $cli -> muncli = $request->muncli;
-    $cli -> cp = $request -> cp;
-    $cli -> id_es = $request -> id_es;
-      $cli -> save();
+    // insertar datos
+    $cli = clientes::find($id);
+    $cli->id= $request->id;
+    if ($file!="")
+    {
+      $cli->archivo=$img2;
+    }
+
+  
+      
+    $cli->nombrecli = $request->nombrecli;
+    $cli->apacli = $request->apacli;
+    $cli->amacli = $request->amacli;
+    $cli->correocli = $request->correocli;
+    $cli->telcli = $request->telcli;
+    $cli->genero = $request->genero;
+    $cli->callecli = $request->callecli;
+    $cli->no_ext = $request->no_ext;
+    $cli->no_int = $request->no_int;
+    $cli->colcli = $request->colcli;
+    $cli->locacli = $request->locacli;
+    $cli->muncli = $request->muncli;
+    $cli->cp = $request->cp;
+    $cli->id_es = $request->id_es;
+    $cli->save();
 
       $titulo = "MODIFICACION DEL CLIENTE";
       $mensaje1 = "El cliente fue modificado correctamente";

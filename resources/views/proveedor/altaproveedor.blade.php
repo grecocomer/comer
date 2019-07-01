@@ -172,18 +172,7 @@
                                                 </div>
                                             </div>
 
-                                            @if($errors->first('mun_prov'))
-                                            <i>{{$errors->first('mun_prov')}}</i>
-                                            @endif
-                                            <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="Municipio">Municipio:<span
-                                                        class="text-danger">*</span></label>
-                                                <div class="col-lg-6">
-                                                    <input placeholder="Municipio..." class="form-control" id="Municipio" type='text' name='mun_prov'
-                                                        value="{{old('mun_prov')}}">
-                                                </div>
-                                            </div>
-
+                                          
                                             <div class="form-group row">
                                             <label class="col-lg-4 col-form-label" for="Seleccione estado">Seleccione
                                                             su Estado: <span class="text-danger">*</span></label>
