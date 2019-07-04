@@ -15,6 +15,25 @@ use Session;
 class conproveedor extends Controller
 {
     //proveedor
+
+      //INICIO
+    public function confirmacion()
+    {
+            if( Session::get('sesionidu')!="")
+    {
+                return view ('cliente.mensaje1');
+              }
+              else
+              {
+                Session::flash('error', 'El usuario esta desactivado, favor de consultar a su administrador');
+              return redirect()->route('login');
+              }
+  }
+
+  public function home()
+  { 
+  return view ('index');
+  }
     
 
 public function altaproveedor()
@@ -30,7 +49,7 @@ public function altaproveedor()
   // aqui esta el error
   // sirve para hacer que el cuadro de texto  siempre tenga el id lleno, siempre y cuando tengas tegristros
   // en la base de datos.
-  $clavequesigue = proveedores::orderBy('id_prov','desc')
+  $clavequesigue = proveedores::withTrashed()->orderBy('id_prov','desc')
   ->take(1)
   ->get();
   
@@ -126,9 +145,7 @@ public function guardaproveedor(Request $request)
 
       $titulo = "ALTA DE PROVEEDOR";
       $mensaje1 = "El Proveedor fue guardado correctamente";
-      return view ("cliente.mensaje1")
-      ->with('titulo', $titulo)
-      ->with('mensaje1', $mensaje1);
+      return redirect()->route('confirmacion');
     }
     else
     {
@@ -166,11 +183,7 @@ public function eliminap($id_prov)
 		{
  // echo "El proveedor a eliminar es $id_prov";
  proveedores::find($id_prov)->delete();
- $titulo = "Desactivar Proveedor";
- $mensaje1 = "El proveedor a sido desactivado correctamente";
- return view ('cliente.mensaje1')
- ->with('titulo',$titulo)
- ->with('mensaje1',$mensaje1);
+ return redirect()->route('confirmacion');
 }
 else
 {
@@ -186,11 +199,7 @@ public function restaurarp($id_prov)
       //echo "El proveedora eliminar es $id_prov";
       proveedores::withTrashed()->where('id_prov',$id_prov)->restore();
      // find($idm)->delete();
-      $titulo = "Restaurar Proveedor";
-      $mensaje1 = "El Proveedor a sido restaurado correctamente";
-      return view ('cliente.mensaje1')
-      ->with('titulo',$titulo)
-      ->with('mensaje1',$mensaje1);
+      return redirect()->route('confirmacion');
     }
     else
     {
@@ -204,15 +213,15 @@ public function restaurarp($id_prov)
       if(Session::get('sesionidu')!="")
       {
      // echo "proveedor modificado $id_prov";
-     $pro = proveedores::where('id_prov','=',$id_prov)->get();
-     $id_es=$pro[0]->id_es;
+     $proveedores = proveedores::where('id_prov','=',$id_prov)->get();
+     $id_es=$proveedores[0]->id_es;
      $estado = estados::where('id_es','=',$id_es)->get();
      $demas = estados::where('id_es','!=',$id_es)->get();
 
 
      return view('proveedor.modificaproveedor')
      // el cero es para que todos los datos de la consulta aparezcan
-     ->with('proveedores',$pro[0])
+     ->with('proveedores',$proveedores[0])
      ->with('id_es',$id_es)
      ->with('estados',$estado[0]->estado)
      ->with('demas',$demas);
@@ -298,9 +307,7 @@ public function restaurarp($id_prov)
 
       $titulo = "MODIFICACION DEL PROVEEDOR";
       $mensaje1 = "El Proveedor fue modificado correctamente";
-      return view ("cliente.mensaje1")
-      ->with('titulo', $titulo)
-      ->with('mensaje1', $mensaje1);
+      return redirect()->route('confirmacion');
     }
     else
     {

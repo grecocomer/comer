@@ -80,16 +80,16 @@
                       <input placeholder="RFC..." class="form-control" id="rfc" type='text' name='rfc' value="{{old('rfc')}}" />
                     </div>
                   </div>
-
+                  
                   @if($errors->first('Archivo'))
-                  <i>{{ $errors->first('Archivo')}}</i>
-                  @endif
-                  <div class="form-group row">
-                    <label class="col-lg-4 col-form-label" for="arc"> Archivo: <span class="text-danger">*</span></label>
-                    <div class="col-lg-6">
-                      <input class="form-control" id="arc" type="file" name="Archivo" align="center">
-                    </div>
-                  </div>
+                                    <i>{{ $errors->first('Archivo')}}</i>
+                                    @endif<br>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label" for=" Archivo"> Archivo: <span class="text-danger">*</span></label>
+                                        <div class="col-lg-6">
+                                            <input class="form-control" id="Archivo" type="file" name="Archivo" align="center">
+                                        </div>
+                                    </div>
 
                   <div class="form-group row">
                     <label class="col-lg-4 col-form-label" for=" Telefono"> Genero:<span class="text-danger">*</span></label>

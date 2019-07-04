@@ -15,6 +15,25 @@ class conproducto extends Controller
 {
     // productos
 
+     //INICIO
+     public function confirmacion()
+     {
+             if( Session::get('sesionidu')!="")
+      {
+                 return view ('cliente.mensaje1');
+               }
+               else
+               {
+                 Session::flash('error', 'El usuario esta desactivado, favor de consultar a su administrador');
+               return redirect()->route('login');
+               }
+}
+
+public function home()
+{ 
+return view ('index');
+}
+
 
 public function altaproducto()
 {
@@ -27,10 +46,20 @@ public function altaproducto()
   // aqui esta el error
   // sirve para hacer que el cuadro de texto  siempre tenga el id lleno, siempre y cuando tengas tegristros
   // en la base de datos.
-  $clavequesigue = productos::orderBy('id_prod','desc')
+  $clavequesigue = productos::withTrashed()->orderBy('id_prod','desc')
   ->take(1)
   ->get();
-   $idp = $clavequesigue[0]->id_prod+1;
+  
+
+   
+   if (count($clavequesigue)==0)
+   {
+   $idp = 1;
+   }
+   else
+   {
+   $idp= $clavequesigue[0]->id_prod+1;
+   }
 
    //muestra el combo con los datos activos en la base de datos.
   $marcaproductos = marcaproductos::where('activo','si')
@@ -42,9 +71,10 @@ $catproductos = catproductos::where('activo','si')
 ->get();
 // DESPUES DE QUE VERIFICA TODOS LOS DATOS MANDA A LLAMAR A LA VISTA
 //return $sexo;
-return view ('producto.altaproducto')->with('marcaproductos', $marcaproductos)
-                                      ->with('catproductos', $catproductos)
-                                     ->with('idp',$idp);
+return view ('producto.altaproducto')
+->with('marcaproductos', $marcaproductos)
+->with('catproductos', $catproductos)
+->with('idp',$idp);
                                     }
                                     else
                                     {
@@ -64,10 +94,7 @@ return view ('producto.altaproducto')->with('marcaproductos', $marcaproductos)
         'nombre_prod'=>'required|regex:/^[\pL\s\-]+$/u',
         'archivo' => 'image|mimes:jpg,jpeg,gif,png',
         'descripcion_prod'=>'required|regex:/^[\pL\s\-]+$/u',
-        'Existencia'=>'required|regex:/^[\pL\s\-]+$/u',
         'costo'=>'required|numeric',
-        'u_m'=>'required|regex:/^[\pL\s\-]+$/u',
-        'contenido'=>'required|regex:/^[\pL\s\-]+$/u'
       ]);   
       
         //$file => c:/>user/images/  ruta de la imagen
@@ -89,25 +116,21 @@ return view ('producto.altaproducto')->with('marcaproductos', $marcaproductos)
 
       // insertar datos
       $prod = new productos;
-    //  $cli -> archivo =$img2;
-      $prod -> id_prod = $request->id_prod;
-      $prod -> nombre_prod = $request->nombre_prod;
+      $prod->id_prod = $request->id_prod;
+      $prod->nombre_prod = $request->nombre_prod;
       //campo archivo de la base de datos
-      $prod -> archivo = $img2;
-      $prod -> descripcion_prod = $request->descripcion_prod;
-      $prod-> Existencia = $request->Existencia;
-      $prod -> costo = $request->costo;
-      $prod-> u_m = $request->u_m;
-      $prod->  contenido = $request->contenido;
-      $prod-> id_marca = $request -> id_marca;
-      $prod-> id_cat_producto = $request -> id_cat_producto;
-      $prod-> save();
+      $prod->archivo = $img2;
+      $prod->descripcion_prod = $request->descripcion_prod;
+      $prod->Existencia = $request->Existencia;
+      $prod->tipo = $request->tipo;
+      $prod->costo = $request->costo;
+      $prod->u_m = $request->u_m;
+      $prod->contenido = $request->contenido;
+      $prod->id_marca = $request ->id_marca;
+      $prod->id_cat_producto = $request->id_cat_producto;
+      $prod->save();
 
-      $titulo = "ALTA DE PRODUCTO";
-      $mensaje1 = "El Producto fue guardado correctamente";
-      return view ("cliente.mensaje1")
-      ->with('titulo', $titulo)
-      ->with('mensaje1', $mensaje1);
+      return redirect()->route('confirmacion');
     }
 
     // reporte producto
@@ -118,22 +141,15 @@ public function reporteproducto()
 
     //consulta para hacer uns multiconsulta de varias tablas                       
  
-    $res=\DB::select("SELECT p.id_prod, 
-    p.nombre_prod, 
-    p.archivo, 
-    p.descripcion_prod, 
-    p.Existencia, 
-    p.costo,
-    p.u_m, 
-    p.contenido,
-    m.nom_marca AS nomarc,
-    c.nom_categoria AS nomcat,
-    p.deleted_at
-    FROM productos AS p 
-    INNER JOIN catproductos AS c ON p.id_cat_producto = c.id_cat_producto
-    INNER JOIN marcaproductos AS m ON p.id_marca = m.id_marca"); 
+    $productos=\DB::select("SELECT p.id_prod, p.nombre_prod, p.archivo, p.descripcion_prod, p.Existencia,p.tipo,
+                          p.costo,p.u_m, p.contenido,m.nom_marca AS nomarc,c.nom_categoria AS nomcat,p.deleted_at
+                      FROM productos AS p 
+                      INNER JOIN catproductos AS c ON p.id_cat_producto = c.id_cat_producto
+                      INNER JOIN marcaproductos AS m ON p.id_marca = m.id_marca
+                      ORDER BY p.`id_prod`"); 
 
-    return view ('producto.reporteprod')->with('productos',$res);
+    return view ('producto.reporteprod')
+    ->with('productos',$productos);
 
     //$productos = productos::withTrashed()// solo desactiva el registro
     
@@ -155,26 +171,39 @@ else
         if(Session::get('sesionidu')!="")
 		{
       //  echo "Maestro modificado $idm";
-
-      $pro = productos::where('id_prod','=',$id_prod)->get();
-
-      $id_marca=$pro[0]->id_marca;
-      $id_cat_producto=$pro[0]->id_cat_producto;
       
+      $productos = productos::where('id_prod','=',$id_prod)->get();
+
+      $id_prod = $productos[0]->id_prod;
+
+      $produ = productos::where('id_prod','=',$id_prod)->get();
+
+      $prod = productos::where('id_prod','=',$id_prod)->get();
+
+      $id_marca=$productos[0]->id_marca;
+
       $marca = marcaproductos::where('id_marca','=',$id_marca)->get();
+
       $marcaproductos = marcaproductos::where('id_marca','!=',$id_marca)->get();
 
+      $id_cat_producto=$productos[0]->id_cat_producto;
+
       $categoria = catproductos::where('id_cat_producto','=',$id_cat_producto)->get();
+
       $catproductos = catproductos::where('id_cat_producto','!=',$id_cat_producto)->get();
 
       return view('producto.modificaproducto')
       // el cero es para que todos los datos de la consulta aparezcan
-      ->with('productos',$pro[0])
+      ->with('productos',$productos[0])
+      ->with('id_prod',$id_prod)
+      ->with('produ',$produ[0]->Existencia)
+     
 
       ->with('id_marca',$id_marca)
-      ->with('marca',$marca[0]->nombre_prod)
+      ->with('marca',$marca[0]->nom_marca)
       ->with('marcaproductos',$marcaproductos)
 
+      ->with('id_cat_producto',$id_cat_producto)
       ->with('categoria',$categoria[0]->nom_categoria)
       ->with('catproductos',$catproductos);
     }
@@ -197,7 +226,6 @@ else
         $costo = $request->costo;
         $u_m = $request->u_m;
         $contenido = $request->contenido;
-        $cp = $request->cp;
         $id_marca = $request->id_marca;
         $id_cat_producto = $request->id_cat_producto;
 
@@ -208,10 +236,8 @@ else
           'nombre_prod'=>'required|regex:/^[\pL\s\-]+$/u',
           'archivo' => 'image|mimes:jpg,jpeg,gif,png',
           'descripcion_prod'=>'required|regex:/^[\pL\s\-]+$/u',
-          'Existencia'=>'required|regex:/^[\pL\s\-]+$/u',
           'costo'=>'required|numeric',
-          'u_m'=>'required|regex:/^[\pL\s\-]+$/u',
-          'contenido'=>'required|regex:/^[\pL\s\-]+$/u',
+         
         ]);   
         
           //$file => c:/>user/images/  ruta de la imagen
@@ -233,27 +259,20 @@ else
             $prod->archivo=$img2;
           }
   
-        // insertar datos
-      //  $prod = new productos;
-      //  $cli -> archivo =$img2;
-       $prod -> id_prod = $request->id_prod;
-        $prod -> nombre_prod = $request->nombre_prod;
-        //campo archivo de la base de datos
-       // $prod -> archivo = $img2;
-        $prod -> descripcion_prod = $request->descripcion_prod;
-        $prod-> Existencia = $request->Existencia;
-        $prod -> costo = $request->costo;
-        $prod-> u_m = $request->u_m;
-        $prod->  contenido = $request->contenido;
-        $prod-> id_marca = $request -> id_marca;
-        $prod-> id_cat_producto = $request -> id_cat_producto;
-        $prod-> save();
+        // 
+      
+        $prod->id_prod = $request->id_prod;
+        $prod->nombre_prod = $request->nombre_prod;
+        $prod->descripcion_prod = $request->descripcion_prod;
+        $prod->Existencia = $request->Existencia;
+        $prod->costo = $request->costo;
+        $prod->u_m = $request->u_m;
+        $prod->contenido = $request->contenido;
+        $prod->id_marca = $request->id_marca;
+        $prod->id_cat_producto = $request->id_cat_producto;
+        $prod->save();
   
-        $titulo = "MODIFICACION DEl PRODUCTO";
-        $mensaje1 = "El Producto fue guardado correctamente";
-        return view ("cliente.mensaje1")
-        ->with('titulo', $titulo)
-        ->with('mensaje1', $mensaje1);
+        return redirect()->route('confirmacion');
       }
       else
       {
@@ -272,11 +291,7 @@ else
         //echo "El maestro a eliminar es $id_prod";
         productos::find($id_prod)->delete();
 
-        $titulo = "Desactivar El producto";
-        $mensaje1 = "El Producto a sido desactivado correctamente";
-        return view ('cliente.mensaje1')
-      ->with('titulo', $titulo)
-      ->with('mensaje1', $mensaje1);
+        return redirect()->route('confirmacion');
     }
     else
     {
@@ -294,11 +309,7 @@ else
        
         productos::withTrashed()->where('id_prod',$id_prod)->restore();
        // find($idm)->delete();
-        $titulo = "Restaurar Producto";
-        $mensaje1 = "El Producto a sido restaurado correctamente";
-        return view ("cliente.mensaje1")
-        ->with('titulo', $titulo)
-        ->with('mensaje1', $mensaje1);
+       return redirect()->route('confirmacion');
       }
       else
       {

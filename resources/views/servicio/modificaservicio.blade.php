@@ -58,6 +58,20 @@
                                                 </div>
                                             </div>
 
+                                            @if($errors->first('costo'))
+                                    <i> {{ $errors->first('costo') }}<i>
+                                            @endif
+
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="Costo">Costo:<span
+                                                        class="text-danger">*</span></label>
+                                                <div class="col-lg-6">
+                                                    <input placeholder="costo..." class="form-control" id="id" type='text' name='costo'
+                                                        value="{{$servicios->costo}}" readonly>
+                                                </div>
+                                            </div>
+
+
                                             @if($errors->first('fecha_solicitud_ser'))
                                             <i>{{$errors->first('fecha_solicitud_ser')}}</i>
                                             @endif
@@ -67,7 +81,7 @@
                                                     de solicitud:<span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
                                                     <input class="form-control" id="id" type='date' name='fecha_solicitud_ser'
-                                                        value="{{$servicios->fecha_solicitud_ser}}">
+                                                        value="{{$servicios->fecha_solicitud_ser}}" readonly>
                                                 </div>
                                             </div>
 
@@ -80,7 +94,7 @@
                                                     Inicio:<span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
                                                     <input class="form-control" id="id" type='date' name='fecha_inicio_ser'
-                                                        value="{{$servicios->fecha_inicio_ser}}">
+                                                        value="{{$servicios->fecha_inicio_ser}}" readonly>
                                                 </div>
                                             </div>
 
@@ -93,7 +107,7 @@
                                                         class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
                                                     <input class="form-control" id="id" type='date' name='fecha_fin_ser'
-                                                        value="{{$servicios->fecha_fin_ser}}" >
+                                                        value="{{$servicios->fecha_fin_ser}}" readonly>
                                                 </div>
                                             </div>
 
@@ -116,8 +130,8 @@
                                                 <div class="col-lg-6">
                                                     <select class="form-control" id="Seleccione el empleado" name='id_emp'>
                                                     <option value='{{$id_emp}}'>{{$emp}}</option>
-                                                        @foreach($empleados as $emp)
-                                                        <option value='{{$emp->id_emp}}'>{{$emp->nombre_emp}}</option>
+                                                        @foreach($empleados as $em)
+                                                        <option value='{{$em->id_emp}}'>{{$em->nombre_emp}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
@@ -128,17 +142,18 @@
                                                     la categoria:<span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
                                                     <select class="form-control" id="Seleccione la categoria" name='id_cat_ser'>
-                                                    <option value='{{$id_cat_ser}}'>{{$catservicios}}</option>
+                                                    <option value='{{$id_cat_ser}}'>{{$catego}}</option>
                                                         @foreach($catservicios as $cate)
                                                         <option value='{{$cate->id_cat_ser}}'>{{$cate->nom_cate}}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </div>
+                                            </div>
 
                                             <div class="form-group row">
                                                 <div class="col-lg-8 ml-auto">
-                                                    <button type="submit" name='Guardar' class="btn btn-primary">Submit</button>
+                                                    <button type="submit" name='Guardar' class="btn btn-primary">Guardar</button>
                                                 </div>
                                             </div>
                                             <!--<a href="" class="btn btn-success">Modificar</a>-->

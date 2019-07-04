@@ -13,9 +13,11 @@
     <script src="main.js"></script>
 </head>
 
-<h1 align="center">{{$titulo}}</h1>
-<br>
-<br>
-<br>
-<h3 align="center">{{$mensaje1}}</h3>
+    <br>
+    <div align="center">
+        <H2>DATOS GUARDADOS EXITOSAMENTE</H2>
+        <a href="{{route('home')}}"><button type="button" class="btn btn-success">Success</button></a>
+        
+    </div>
+    <br>
 @stop

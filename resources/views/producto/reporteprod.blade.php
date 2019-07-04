@@ -29,8 +29,9 @@
                                         <th>Nombre</th>
                                         <th>Foto</th>
                                         <th>Descripcion</th>
-                                        <th>Existencia</th>
                                         <th>Costo</th>
+                                        <th>Existencia</th>
+                                        <th>Tipo</th> 
                                         <th>Unidad de Medida</th>
                                         <th>contenido</th>
                                         <th>Marca</th>
@@ -46,8 +47,9 @@
                                     <td>{{$prod->nombre_prod}}</td>
                                     <td> <img src="{{asset('Archivo/'. $prod->archivo)}}" height=50 windth=50></td>
                                     <td>{{$prod->descripcion_prod}}</td>
-                                    <td>{{$prod->Existencia}}</td>
                                     <td>{{$prod->costo}}</td>
+                                    <td>{{$prod->Existencia}}</td>
+                                    <td>{{$prod->tipo}}</td>  
                                     <td>{{$prod->u_m}}</td>
                                     <td>{{$prod->contenido}}</td>
                                     <td>{{$prod->nomarc}}</td>

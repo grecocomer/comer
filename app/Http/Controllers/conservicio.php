@@ -14,7 +14,27 @@ use Session;
 
 class conservicio extends Controller
 {
-   
+
+        //INICIO
+        public function confirmacion()
+        {
+                if( Session::get('sesionidu')!="")
+         {
+                    return view ('cliente.mensaje1');
+                  }
+                  else
+                  {
+                    Session::flash('error', 'El usuario esta desactivado, favor de consultar a su administrador');
+                  return redirect()->route('login');
+                  }
+}
+
+public function home()
+{ 
+  return view ('index');
+}
+
+
 // servicios
 
 public function altaservicio()
@@ -29,7 +49,7 @@ public function altaservicio()
 // aqui esta el error
 // sirve para hacer que el cuadro de texto  siempre tenga el id lleno, siempre y cuando tengas tegristros
 // en la base de datos.
-$clavequesigue = servicios::orderBy('id_ser','desc')
+$clavequesigue = servicios::withTrashed()->orderBy('id_ser','desc')
 ->take(1)
 ->get();
 $ids = $clavequesigue[0]->id_ser+1;
@@ -39,17 +59,18 @@ $empresas = empresas::where('activo','si')
 ->orderBy('nombre_empresa','asc')
 ->get();
 
-$empleados = empleados::orderBy('nombre_emp','asc')
+$empleados = empleados::withTrashed()->orderBy('nombre_emp','asc')
 ->get();
 
 $catservicios = catservicios::where('activo','si')
 ->orderBy('nom_cate','asc')
 ->get();
 // DESPUES DE QUE VERIFICA TODOS LOS DATOS MANDA A LLAMAR A LA VISTA
-return view ('servicio.altaservicio')->with('empresas', $empresas)
-                                 ->with('empleados', $empleados)
-                                 ->with('catservicios',$catservicios)
-                                 ->with('ids',$ids);
+return view ('servicio.altaservicio')
+->with('empresas', $empresas)
+->with('empleados', $empleados)
+->with('catservicios',$catservicios)
+->with('ids',$ids);                                 
                                 }
                                 else
                                 {
@@ -78,23 +99,20 @@ $this->validate($request,[
 
 // insertar datos
 $ser = new servicios;
-$ser -> id_ser = $request->id_ser;
-$ser -> nombre_ser = $request->nombre_ser;
-$ser -> descripcion_ser = $request->descripcion_ser;
-$ser -> costo = $request->costo;
-$ser-> fecha_solicitud_ser = $request->fecha_solicitud_ser;
-$ser-> fecha_inicio_ser = $request->fecha_inicio_ser;
-$ser-> fecha_fin_ser = $request->fecha_fin_ser;
-$ser-> id_empresa = $request -> id_empresa;
-$ser-> id_emp = $request -> id_emp;
-$ser-> id_cat_ser = $request -> id_cat_ser;
+$ser ->id_ser = $request->id_ser;
+$ser ->nombre_ser = $request->nombre_ser;
+$ser ->descripcion_ser = $request->descripcion_ser;
+$ser ->costo = $request->costo;
+$ser->fecha_solicitud_ser = $request->fecha_solicitud_ser;
+$ser->fecha_inicio_ser = $request->fecha_inicio_ser;
+$ser->fecha_fin_ser = $request->fecha_fin_ser;
+$ser->id_empresa = $request -> id_empresa;
+$ser->id_emp = $request -> id_emp;
+$ser->id_cat_ser = $request -> id_cat_ser;
 $ser-> save();
 
-$titulo = "ALTA DE SERVICIO";
-$mensaje1 = "El servicio fue guardado correctamente";
-return view ("cliente.mensaje1")
-->with('titulo', $titulo)
-->with('mensaje1', $mensaje1);
+
+return redirect()->route('confirmacion');
 }
 else
 {
@@ -116,6 +134,7 @@ public function reporteservicio()
 $jio=\DB::select("SELECT s.id_ser, 
 s.nombre_ser, 
 s.descripcion_ser, 
+s.costo,
 s.fecha_solicitud_ser,
 s.fecha_inicio_ser,
 s.fecha_fin_ser, 
@@ -146,11 +165,7 @@ public function eliminaservicio($id_ser)
         //echo "El maestro a eliminar es $id_prod";
         servicios::find($id_ser)->delete();
 
-        $titulo = "Desactivar El Servicio";
-        $mensaje1 = "El Servicio a sido desactivado correctamente";
-        return view ('cliente.mensaje1')
-      ->with('titulo', $titulo)
-      ->with('mensaje1', $mensaje1);
+        return redirect()->route('confirmacion');
     }
     else
     {
@@ -168,11 +183,7 @@ public function eliminaservicio($id_ser)
        
         servicios::withTrashed()->where('id_ser',$id_ser)->restore();
        // find($idm)->delete();
-        $titulo = "Restaurar Servicio";
-        $mensaje1 = "El Servicio a sido restaurado correctamente";
-        return view ("cliente.mensaje1")
-        ->with('titulo', $titulo)
-        ->with('mensaje1', $mensaje1);
+       return redirect()->route('confirmacion');
       }
       else
       {
@@ -189,24 +200,31 @@ public function eliminaservicio($id_ser)
        
       //  echo "Maestro modificado $idm";
 
-      $s = servicios::where('id_ser','=',$id_ser)->get();
+      
 
-      $id_empresa=$s[0]->id_empresa;
-      $id_emp=$s[0]->id_emp;
-      $id_cat_ser=$s[0]->id_cat_ser;
+      $servicios = servicios::where('id_ser','=',$id_ser)->get();
+
+      $id_empresa=$servicios[0]->id_empresa;
 
       $empre = empresas::where('id_empresa','=',$id_empresa)->get();
+
       $empresas = empresas::where('id_empresa','!=',$id_empresa)->get();
 
+      $id_emp=$servicios[0]->id_emp;
+
       $emp = empleados::where('id_emp','=',$id_emp)->get();
-      $empleados = empleados::where('id_emp','!=',$id_emp)->get();
       
-      $cate =catservicios::where('id_cat_ser','=',$id_cat_ser)->get();
+      $empleados = empleados::where('id_emp','!=',$id_emp)->get();
+
+      $id_cat_ser=$servicios[0]->id_cat_ser;
+
+      $catego =catservicios::where('id_cat_ser','=',$id_cat_ser)->get();
+
       $catservicios = catservicios::where('id_cat_ser','!=',$id_cat_ser)->get();
 
       return view('servicio.modificaservicio')
       // el cero es para que todos los datos de la consulta aparezcan
-      ->with('servicios',$s[0])
+      ->with('servicios',$servicios[0])
 
       ->with('id_empresa',$id_empresa)
       ->with('empre',$empre [0]->nombre_empresa)
@@ -217,7 +235,7 @@ public function eliminaservicio($id_ser)
       ->with('empleados',$empleados)
 
       ->with('id_cat_ser',$id_cat_ser)
-      ->with('cate',$cate[0]->nom_categoria)
+      ->with('catego',$catego[0]->nom_cate)
       ->with('catservicios',$catservicios);
     }
     else
@@ -260,23 +278,19 @@ public function eliminaservicio($id_ser)
   
         // insertar datos
       
-       $ser -> id_ser = $request->id_ser;
-        $ser -> nombre_ser = $request->nombre_ser;
-        $ser -> descripcion_ser = $request->descripcion_ser;
-        $ser -> costo = $request->costo;
-        $ser-> fecha_solicitud_ser = $request->fecha_solicitud_ser;
-        $ser -> fecha_inicio_ser = $request->fecha_inicio_ser;
-        $ser-> fecha_fin_ser = $request->fecha_fin_ser;
-        $ser->  id_empresa = $request->id_empresa;
-        $ser-> id_emp = $request -> id_emp;
-        $ser-> id_cat_ser = $request -> id_cat_ser;
-        $ser-> save();
+        $ser->id_ser              = $request->id_ser;
+        $ser->nombre_ser          = $request->nombre_ser;
+        $ser->descripcion_ser     = $request->descripcion_ser;
+        $ser->costo               = $request->costo;
+        $ser->fecha_solicitud_ser = $request->fecha_solicitud_ser;
+        $ser->fecha_inicio_ser    = $request->fecha_inicio_ser;
+        $ser->fecha_fin_ser       = $request->fecha_fin_ser;
+        $ser->id_empresa          = $request->id_empresa;
+        $ser->id_emp              = $request->id_emp;
+        $ser->id_cat_ser          = $request->id_cat_ser;
+        $ser->save();
   
-        $titulo = "MODIFICACION DEl SERVICIO";
-        $mensaje1 = "El Servicio fue guardado correctamente";
-        return view ("cliente.mensaje1")
-        ->with('titulo', $titulo)
-        ->with('mensaje1', $mensaje1);
+        return redirect()->route('confirmacion');
       }
       else
       {

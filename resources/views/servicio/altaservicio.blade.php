@@ -149,11 +149,12 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group row">
-                                                <div class="col-lg-8 ml-auto">
-                                                    <button type="submit" name='Guardar' class="btn btn-primary">Enviar</button>
-                                                </div>
                                             </div>
+                                            <div class="form-group row">
+                                                        <div class="col-lg-8 ml-auto">
+                                                            <button type="submit" name='Guardar' class="btn btn-primary">Guardar</button>
+                                                        </div>
+                                                    </div>
                                             <!--<a href="" class="btn btn-success">Modificar</a>-->
                         </form>
                     </div>

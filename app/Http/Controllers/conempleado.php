@@ -14,6 +14,26 @@ use Session;
 
 class conempleado extends Controller
 {
+
+  //INICIO
+  public function confirmacion()
+  {
+          if( Session::get('sesionidu')!="")
+   {
+              return view ('cliente.mensaje1');
+            }
+            else
+            {
+              Session::flash('error', 'El usuario esta desactivado, favor de consultar a su administrador');
+            return redirect()->route('login');
+            }
+}
+
+public function home()
+{ 
+return view ('index');
+}
+
     // EMPLEADO
     public function altaempleados()
     {
@@ -116,9 +136,7 @@ return view ('empleado.altaempleado')->with('estados', $estados)
 
       $titulo = "ALTA DE EMPLEADO";
       $mensaje1 = "El empleado fue guardado correctamente";
-      return view ("cliente.mensaje1")
-      ->with('titulo', $titulo)
-      ->with('mensaje1', $mensaje1);
+      return redirect()->route('confirmacion');
     }
     else
     {
@@ -160,11 +178,7 @@ $res=\DB::select("SELECT em.id_emp, em.nombre_emp, em.apa_emp, em.ama_emp, em.rf
     // echo "El cliente a eliminar es $id";
     // aqui esta el error
     empleados::find($id_emp)->delete();
-    $titulo = "Desactivar Empleado";
-    $mensaje1 = "El Empleado a sido desactivado correctamente";
-    return view ('cliente.mensaje1')
-    ->with('titulo',$titulo)
-    ->with('mensaje1',$mensaje1);
+    return redirect()->route('confirmacion');
   }
   else
   {
@@ -181,11 +195,7 @@ $res=\DB::select("SELECT em.id_emp, em.nombre_emp, em.apa_emp, em.ama_emp, em.rf
       //echo "El maestro a eliminar es $idm";
       empleados::withTrashed()->where('id_emp',$id_emp)->restore();
      // find($idm)->delete();
-      $titulo = "Restaurar Empleado";
-      $mensaje1 = "El Empleado a sido restaurado correctamente";
-      return view ('cliente.mensaje1')
-      ->with('titulo',$titulo)
-      ->with('mensaje1',$mensaje1);
+      return redirect()->route('confirmacion');
     }
     else
     {
@@ -302,9 +312,7 @@ if ($file!="")
 
       $titulo = "MODIFICACION DEL EMPLEADO";
       $mensaje1 = "El empleado fue modificado correctamente";
-      return view ("cliente.mensaje1")
-      ->with('titulo', $titulo)
-      ->with('mensaje1', $mensaje1);
+      return redirect()->route('confirmacion');
     }
     else
     {

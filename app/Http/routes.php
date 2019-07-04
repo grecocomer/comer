@@ -10,6 +10,7 @@ route::get('rutabasica',function(){
   return "Hola Mundo";
 });
 
+
 //paginas de productos
 route::get('/limpieza','con1@limpieza')->name('limpieza');
 route::get('/seguridad','con1@seguridad')->name('seguridad');
@@ -20,6 +21,10 @@ route::get('/vistaprincipal','con1@vistaprincipal')->name('principal');
 // rutas para el cliente
 route::get('/altacliente','concliente@altacliente');
 Route::POST('/guardacliente','concliente@guardacliente')->name('guardacliente');
+
+Route::get('/confirmacion','concliente@confirmacion')->name('confirmacion'); // Confirma el guardado de los datos
+Route::get('/inicio','concliente@home')->name('home');
+
 // ruta para reportes.
 Route::get('/reporteclientes', 'concliente@reporteclientes');
 // ruta para eliminar cliente con parametros idm
@@ -36,6 +41,9 @@ Route::get('/restaurarc/{id}', 'concliente@restaurarc')->name('restaurarc');
 // rutas para el empleado
 route::get('/altaempleados','conempleado@altaempleados');
 Route::POST('/guardaempleado','conempleado@guardaempleado')->name('guardaempleado');
+
+Route::get('/confirmacion','conempleado@confirmacion')->name('confirmacion'); // Confirma el guardado de los datos
+Route::get('/inicio','conempleado@home')->name('home');
 // ruta para reportes.
 Route::get('/reporteempleado', 'conempleado@reporteempleado');
 // ruta para eliminar cliente con parametros id-emp
@@ -52,6 +60,9 @@ Route::get('/restaurare/{id_emp}', 'conempleado@restaurare')->name('restaurare')
 //rutas para proveedor
 route::get('/altaproveedor','conproveedor@altaproveedor');
 Route::POST('/guardaproveedor','conproveedor@guardaproveedor')->name('guardaproveedor');
+
+Route::get('/confirmacion','conproveedor@confirmacion')->name('confirmacion'); // Confirma el guardado de los datos
+Route::get('/inicio','conproveedor@home')->name('home');
 // ruta para reportes.
 Route::get('/reporteproveedor', 'conproveedor@reporteproveedor');
 // ruta para eliminar provedor con parametros idm
@@ -68,6 +79,10 @@ Route::get('/restaurarp/{id_prov}', 'conproveedor@restaurarp')->name('restaurarp
 // rutas productos
 route::get('/altaproducto','conproducto@altaproducto');
 Route::POST('/guardaproducto','conproducto@guardaproducto')->name('guardaproducto');
+
+Route::get('/confirmacion','conproducto@confirmacion')->name('confirmacion'); // Confirma el guardado de los datos
+Route::get('/inicio','conproducto@home')->name('home');
+
 // ruta para reportes.
 Route::get('/reporteproducto', 'conproducto@reporteproducto');
 //modificar
@@ -85,6 +100,9 @@ Route::get('/restaurarproducto/{id_prod}', 'conproducto@restaurarproducto')->nam
 // rutas para el servicio
 route::get('/altaservicio','conservicio@altaservicio');
 Route::POST('/guardaservicio','conservicio@guardaservicio')->name('guardaservicio');
+
+Route::get('/confirmacion','conservicio@confirmacion')->name('confirmacion'); // Confirma el guardado de los datos
+Route::get('/inicio','conservicio@home')->name('home');
 // ruta para reportes.
 Route::get('/reporteservicio', 'conservicio@reporteservicio');
 //modificar
@@ -101,6 +119,8 @@ Route::get('/restaurarservicio/{id_ser}', 'conservicio@restaurarservicio')->name
 route::get('/altaempresa','conempresa@altaempresa');
 Route::POST('/guardaempresa','conempresa@guardaempresa')->name('guardaempresa');
 Route::get('/reporteempresa', 'conempresa@reporteempresa');
+
+
 // ruta para eliminar empresas con parametros id-emp
 Route::get('/eliminaem/{id_empresa}', 'conempresa@eliminaem')->name('eliminaem');
 //modificar empresas

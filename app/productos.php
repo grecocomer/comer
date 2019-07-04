@@ -11,7 +11,7 @@ class productos extends Model
 
     //cambiar los valores al igual que la migracion
     protected $primaryKey = 'id_prod';
-    protected $fillable = ['id_prod', 'nombre_prod','descripcion_prod','existencia','costo',
+    protected $fillable = ['id_prod', 'nombre_prod','descripcion_prod','existencia','tipo','costo',
     'u_m','contenido', 'id_marca','id_cat_producto'];
 
     protected $date=['deleted_at'];

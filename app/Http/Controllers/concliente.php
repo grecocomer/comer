@@ -13,6 +13,28 @@ use Session;
 
 class concliente extends Controller
 {
+
+  
+        //INICIO
+        public function confirmacion()
+        {
+                if( Session::get('sesionidu')!="")
+         {
+                    return view ('cliente.mensaje1');
+                  }
+                  else
+                  {
+                    Session::flash('error', 'El usuario esta desactivado, favor de consultar a su administrador');
+                  return redirect()->route('login');
+                  }
+}
+
+public function home()
+{ 
+  return view ('index');
+}
+
+
     public function altacliente()
     {
       if(Session::get('sesionidu')!="")
@@ -48,7 +70,8 @@ return view ('cliente.altacliente')
                                     }
     }
   
-  
+
+    
 
     public function guardacliente(Request $request)
     {
@@ -108,29 +131,25 @@ return view ('cliente.altacliente')
       // insertar datos
       $cli = new clientes;
     //  $cli -> archivo =$img2;
-      $cli -> id = $request->id;
-      $cli -> nombrecli = $request->nombrecli;
-      $cli -> apacli = $request->apacli;
-      $cli -> amacli = $request->amacli;
-      $cli -> archivo = $img2;
-      $cli -> correocli = $request->correocli;
-      $cli -> telcli = $request->telcli;
-      $cli -> genero = $request->genero;
-      $cli -> callecli = $request->callecli;
-      $cli -> no_ext = $request->no_ext;
-      $cli -> no_int = $request->no_int;
-      $cli -> colcli = $request->colcli;
-      $cli -> locacli = $request->locacli;
-      $cli -> muncli = $request->muncli;
-      $cli -> cp = $request -> cp;
-      $cli -> id_es = $request -> id_es;
-      $cli -> save();
+      $cli ->id = $request->id;
+      $cli ->nombrecli = $request->nombrecli;
+      $cli ->apacli = $request->apacli;
+      $cli ->amacli = $request->amacli;
+      $cli ->archivo = $img2;
+      $cli ->correocli = $request->correocli;
+      $cli ->telcli = $request->telcli;
+      $cli ->genero = $request->genero;
+      $cli ->callecli = $request->callecli;
+      $cli ->no_ext = $request->no_ext;
+      $cli ->no_int = $request->no_int;
+      $cli ->colcli = $request->colcli;
+      $cli ->locacli = $request->locacli;
+      $cli ->muncli = $request->muncli;
+      $cli ->cp = $request -> cp;
+      $cli ->id_es = $request -> id_es;
+      $cli ->save();
 
-      $titulo = "ALTA DE CLIENTE";
-      $mensaje1 = "El cliente fue guardado correctamente";
-      return view ("cliente.mensaje1")
-      ->with('titulo', $titulo)
-      ->with('mensaje1', $mensaje1);
+      return redirect()->route('confirmacion');
     }
 
 //muestra los datos de los clientes
@@ -167,11 +186,7 @@ return view ('cliente.altacliente')
 		{
      // echo "El cliente a eliminar es $id";
      clientes::find($id)->delete();
-     $titulo = "Desactivar cliente";
-     $mensaje1 = "El cliente a sido desactivado correctamente";
-     return view ('cliente.mensaje1')
-     ->with('titulo',$titulo)
-     ->with('mensaje1',$mensaje1);
+     return redirect()->route('confirmacion');
     }
     else
     {
@@ -188,11 +203,8 @@ return view ('cliente.altacliente')
       //echo "El maestro a eliminar es $idm";
       clientes::withTrashed()->where('id',$id)->restore();
      // find($idm)->delete();
-      $titulo = "Restaurar cliente";
-      $mensaje1 = "El cliente a sido restaurado correctamente";
-      return view ('cliente.mensaje1')
-      ->with('titulo',$titulo)
-      ->with('mensaje1',$mensaje1);
+     
+      return redirect()->route('confirmacion');
     }
     else
     {
@@ -267,23 +279,28 @@ return view ('cliente.altacliente')
         'archivo'=>'image|mimes:jpeg,png,gif,jpg'
       ]);   
       
-        
-      $file = $request->file('Archivo');
-      if($file!="")
-      {	 
-      $ldate = date('Ymd_His_');
-      $img = $file->getClientOriginalName();
-      $img2 = $ldate.$img;
-      \Storage::disk('local')->put($img2, \File::get($file)); 
-      }
+     
+
+    $file = $request->file('Archivo');
+    if($file!=""){
+    //ldate  => 20180928_063455_
+    $ldate = date('Ymd_His_');
+    //$img = normita-jpg
+    $img = $file->getClientOriginalName();
+    // img
+    $img2 = $ldate.$img;
+    //imagen predefinida para el cliente
+    \Storage::disk('local')->put($img2, \File::get($file));
+    }
 
     // insertar datos
     $cli = clientes::find($id);
     $cli->id= $request->id;
     if ($file!="")
     {
-      $cli->archivo=$img2;
+      $cli->Archivo=$img2;
     }
+
 
   
       
@@ -302,12 +319,7 @@ return view ('cliente.altacliente')
     $cli->cp = $request->cp;
     $cli->id_es = $request->id_es;
     $cli->save();
-
-      $titulo = "MODIFICACION DEL CLIENTE";
-      $mensaje1 = "El cliente fue modificado correctamente";
-      return view ("cliente.mensaje1")
-      ->with('titulo', $titulo)
-      ->with('mensaje1', $mensaje1);
+      return redirect()->route('confirmacion');
     }
   
   else

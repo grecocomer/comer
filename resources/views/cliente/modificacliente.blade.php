@@ -82,17 +82,17 @@
                                         </div>
 
 
-                                        @if($errors->first('archivo'))
-                                        <i>{{ $errors->first('archivo')}}</i>
-                                        @endif<br>
-                                        <div class="form-group row">
-                                            <label class="col-lg-4 col-form-label" for=" archivo"> Archivo: <span class="text-danger">*</span></label>
-                                            <div class="col-lg-6">
-                                                <img src="{{asset('archivo/'. $clientes->archivo)}}" height=150 windth=150>
-                                                <input class="form-control" id="archivo" type="file" name="archivo"
-                                                    align="center">
-                                            </div>
+                                        @if($errors->first('Archivo'))
+                                    <i>{{ $errors->first('Archivo')}}</i>
+                                    @endif
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label" for="Archivo"> Archivo:<span class="text-danger">*</span></label>
+                                        <div class="col-lg-6">
+                                            <img src="{{asset('Archivo/'. $clientes->archivo)}}" height=150 windth=150>
+                                            <input class="form-control" id="Archivo" type="file" name="Archivo" align="center">
                                         </div>
+                                    </div>
+
 
                                         @if($errors->first('correocli'))
                                         <i> {{ $errors->first('correocli') }}<i>

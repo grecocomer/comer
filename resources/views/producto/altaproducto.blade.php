@@ -67,30 +67,6 @@
                                                 </div>
                                             </div>
 
-                                            @if($errors->first('Existencia'))
-                                            <i>{{$errors->first('Existencia')}}</i>
-                                            @endif
-                                            <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="Existencia">Existencia:
-                                                    <span class="text-danger">*</span></label>
-                                                <div class="col-lg-6">
-                                                        <select class="form-control" id="Existencia" name='Existencia'
-                                                        value="{{old('Existencia')}}">                                                           
-                                                            <option>Ninguna</option>
-                                                            <option>1 Caja</option>
-                                                            <option>2 Cajas</option>
-                                                            <option>3 Cajas</option>
-                                                            <option>4 Cajas</option>
-                                                            <option>5 Cajas</option>
-                                                            <option>1 Pza</option>
-                                                            <option>2 Pza</option>
-                                                            <option>3 Pza</option>
-                                                            <option>4 Pza</option>
-                                                            <option>5 Pza</option>
-                                                            </select>
-                                                </div>
-                                            </div>
-
                                             @if($errors->first('costo'))
                                             <i>{{$errors->first('costo')}}</i>
                                             @endif
@@ -102,6 +78,29 @@
                                                 </div>
                                             </div>
 
+
+                                            @if($errors->first('Existencia'))
+                                            <i>{{$errors->first('Existencia')}}</i>
+                                            @endif
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="Existencia">Existencia:
+                                                    <span class="text-danger">*</span></label>
+                                                <div class="col-lg-6">
+                                                <input placeholder="Existencia..." class="form-control" id="Existencia" type='text' name='Existencia'
+                                                        value="{{old('Existencia')}}">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-lg-5 col-form-label" for="Existencia">Tipo de Unidad:
+                                                    <span class="text-danger">*</span></label>
+                                                <input type="radio" name="tipo" value="Cajas" checked>Caja(s)
+                                                &nbsp;&nbsp;&nbsp;
+                                                <input type="radio" name="tipo" value="Pz">Pieza(s)
+
+                                                </div>
+
+                                           
                                             @if($errors->first('u_m'))
                                             <i>{{$errors->first('u_m')}}</i>
                                             @endif
@@ -109,22 +108,8 @@
                                                 <label class="col-lg-4 col-form-label" for=" Unidad de medida"> Unidad
                                                     de medida: <span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
-                                                        <select class="form-control" id=" Unidad de medida" name='u_m' value="{{old('u_m')}}">                                                           
-                                                            <option>1/2 pulgada</option>
-                                                            <option>1/4 pulgada</option>
-                                                            <option>1 pulgada</option>
-                                                            <option>2 pulgada</option>
-                                                            <option>3 pulgada</option>
-                                                            <option>4 pulgada</option>
-                                                            <option>5 pulgada</option>
-                                                            <option>6 pulgada</option>
-                                                            <option>7 pulgada</option>
-                                                            <option>8 pulgada</option>
-                                                            <option>9 pulgada</option>
-                                                            <option>2/4 pulgada</option>
-                                                            <option>3/4 pulgada</option>
-                                                            <option>No aplica</option>
-                                                            </select>
+                                                <input placeholder="Unidad de Medida..." class="form-control" id="um" type='text' name='u_m'
+                                                        value="{{old('u_m')}}">
                                                 </div>
                                             </div>
 
@@ -166,11 +151,12 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            </div>
 
                                             <!--<a href="" class="btn btn-success">Modificar</a>-->
                                             <div class="form-group row">
                                                 <div class="col-lg-8 ml-auto">
-                                                    <button type="submit" name='Guardar' class="btn btn-primary">Enviar</button>
+                                                    <button type="submit" name='Guardar' class="btn btn-primary">Guardar</button>
                                                 </div>
                                             </div>
                         </form>

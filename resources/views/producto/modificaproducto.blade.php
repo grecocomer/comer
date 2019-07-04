@@ -64,31 +64,7 @@
                                                     <span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
                                                     <input class="form-control" id="Descripción" type='text' name='descripcion_prod'
-                                                        value="{{$productos->descrpcion_prod}}">
-                                                </div>
-                                            </div>
-
-                                            @if($errors->first('Existencia'))
-                                            <i>{{$errors->first('Existencia')}}</i>
-                                            @endif
-                                            <div class="form-group row">
-                                                <label class="col-lg-4 col-form-label" for="Existencia">Existencia:
-                                                    <span class="text-danger">*</span></label>
-                                                <div class="col-lg-6">
-                                                        <select class="form-control" id="Existencia" name='Existencia'
-                                                        value="{{$productos->Existencia}}">                                                           
-                                                            <option>Ninguna</option>
-                                                            <option>1 Caja</option>
-                                                            <option>2 Cajas</option>
-                                                            <option>3 Cajas</option>
-                                                            <option>4 Cajas</option>
-                                                            <option>5 Cajas</option>
-                                                            <option>1 Pza</option>
-                                                            <option>2 Pza</option>
-                                                            <option>3 Pza</option>
-                                                            <option>4 Pza</option>
-                                                            <option>5 Pza</option>
-                                                            </select>
+                                                        value="{{$productos->descripcion_prod}}">
                                                 </div>
                                             </div>
 
@@ -103,6 +79,44 @@
                                                 </div>
                                             </div>
 
+                                            @if($errors->first('Existencia'))
+                                            <i>{{$errors->first('Existencia')}}</i>
+                                            @endif
+                                            <div class="form-group row">
+                                                <label class="col-lg-4 col-form-label" for="Existencia">Existencia:
+                                                    <span class="text-danger">*</span></label>
+                                                <div class="col-lg-6">
+                                                <input class="form-control" id="Existencia" type='text' name='Existencia'
+                                                        value="{{$productos->Existencia}}">
+                                                </div>
+                                            </div>
+
+                                       
+
+                                        @if($productos->tipo=="Cajas")
+                                            <div class="form-group row">
+                                                <label class="col-lg-5 col-form-label" for="Existencia">Tipo de Unidad:
+                                                    <span class="text-danger">*</span></label>
+                                                <input type="radio" name="tipo" value="{{$productos->tipo}}" checked>Caja(s)
+                                                &nbsp;&nbsp;&nbsp;
+                                                <input type="radio" name="tipo" value="{{$productos->tipo}}">Pieza(s)
+                                                </div>
+
+                                                @else
+
+                                            <div class="form-group row">
+                                                <label class="col-lg-5 col-form-label" for="Existencia">Tipo de Unidad:
+                                                    <span class="text-danger">*</span></label>
+                                                <input type="radio" name="tipo" value="{{$productos->tipo}}">Caja(s)
+                                                &nbsp;&nbsp;&nbsp;
+                                                <input type="radio" name="tipo" value="{{$productos->tipo}}" checked>Pieza(s)
+                                                </div>
+                                                @endif
+
+                                      
+
+                                            
+
                                             @if($errors->first('u_m'))
                                             <i>{{$errors->first('u_m')}}</i>
                                             @endif
@@ -110,22 +124,8 @@
                                                 <label class="col-lg-4 col-form-label" for=" Unidad de medida"> Unidad
                                                     de medida: <span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
-                                                        <select class="form-control" id=" Unidad de medida" name='u_m' value="{{$productos->u_m}}">                                                           
-                                                            <option>1/2 pulgada</option>
-                                                            <option>1/4 pulgada</option>
-                                                            <option>1 pulgada</option>
-                                                            <option>2 pulgada</option>
-                                                            <option>3 pulgada</option>
-                                                            <option>4 pulgada</option>
-                                                            <option>5 pulgada</option>
-                                                            <option>6 pulgada</option>
-                                                            <option>7 pulgada</option>
-                                                            <option>8 pulgada</option>
-                                                            <option>9 pulgada</option>
-                                                            <option>2/4 pulgada</option>
-                                                            <option>3/4 pulgada</option>
-                                                            <option>No aplica</option>
-                                                            </select>
+                                                <input class="form-control" id="Um" type='text' name='u_m'
+                                                        value="{{$productos->u_m}}">
                                                 </div>
                                             </div>
 
@@ -146,6 +146,7 @@
                                                     su Marca:<span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
                                                     <select class="form-control" id="Seleccione su Marca" name='id_marca'>
+                                                        <option value='{{$id_marca}}'>{{$marca}}</option>
                                                         @foreach($marcaproductos as $mar)
                                                         <option value='{{$mar->id_marca}}'>{{$mar->nom_marca}}</option>
                                                         @endforeach
@@ -159,6 +160,7 @@
                                                     la categoria:<span class="text-danger">*</span></label>
                                                 <div class="col-lg-6">
                                                     <select class="form-control" id="Seleccione la categoria" name='id_cat_producto'>
+                                                        <option value='{{$id_cat_producto}}'>{{$categoria}}</option>
                                                         @foreach($catproductos as $cat)
                                                         <option value='{{$cat->id_cat_producto}}'>{{$cat->nom_categoria}}</option>
                                                         @endforeach
@@ -166,10 +168,11 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            </div>
 
                                             <div class="form-group row">
                                                 <div class="col-lg-8 ml-auto">
-                                                    <button type="submit" name='Guardar' class="btn btn-primary">Submit</button>
+                                                    <button type="submit" name='Guardar' class="btn btn-primary">Guardar</button>
                                                 </div>
                                             </div>
                         </form>

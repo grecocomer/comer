@@ -25,9 +25,10 @@
                             cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th>CLAVE</th>
+                                    <th>Clave</th>
                                     <th>Nombre</th>
                                     <th>Descripcion</th>
+                                    <th>Costo</th>
                                     <th>Fecha solicitud</th>
                                     <th>Fecha inicio</th>
                                     <th>Fecha fin</th>
@@ -45,6 +46,7 @@
                                     <td>{{$se->id_ser}}</td>
                                     <td>{{$se->nombre_ser}}</td>
                                     <td>{{$se->descripcion_ser}}</td>
+                                    <td>{{$se->costo}}</td>
                                     <td>{{$se->fecha_solicitud_ser}}</td>
                                     <td>{{$se->fecha_inicio_ser}}</td>
                                     <td>{{$se->fecha_fin_ser}}</td>
