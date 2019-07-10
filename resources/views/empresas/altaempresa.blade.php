@@ -56,20 +56,21 @@
                                                         value="{{old('tipo_empresa')}}">
                                                 </div>
                                             </div>
+                                            </div>
 
-                                            @if($errors->first('activo'))
+
+                                        <!--    @if($errors->first('activo'))
                                             <i>{{$errors->first('activo')}}</i>
                                             @endif
-                                                           <div class="form-group row">
-                                                             Tipo:
+                                                        <div class="form-group row">    
+                                                        <label class="col-lg-4 col-form-label" for="activo">Tipo:
+                                                        <span class="text-danger">*</span></label>
                                                         <label class="col-lg-4 col-form-label" for="activo">
                                                         <input type="radio" name="activo" value="si" checked>Si
-                                                        </label>
-                                                        <label class="col-lg-4 col-form-label" for="activo">
                                                         <input type="radio" name="activo" value="no" >No
                                                         </label>
                                                    
-                                                    </div>
+                                                    </div>-->
                                                     
 
                                            
@@ -80,7 +81,7 @@
                                             <!--<a href="" class="btn btn-success">Modificar</a>-->
                                             <div class="form-group row">
                                                 <div class="col-lg-8 ml-auto">
-                                                    <button type="submit" name='Guardar' class="btn btn-primary">Submit</button>
+                                                    <button type="submit" name='Guardar' class="btn btn-primary">Guardar</button>
                                                 </div>
                                             </div>
                         </form>

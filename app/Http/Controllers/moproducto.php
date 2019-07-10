@@ -125,8 +125,9 @@ return view('modulos.producto.moproducto')
         INNER JOIN productos AS p ON p.id_prod = vd.id_prod
         WHERE vd.id_vp= ?",[$request->id_vp]);
         
-       $resultado2=\DB::select("SELECT total_vp AS total
-                                FROM ventasp WHERE id_vp = ?",[$request->id_vp]);
+       $resultado2=\DB::select("SELECT SUM(cantidad*costo) AS total
+       FROM detalle_vp
+       WHERE id_vp = ?",[$request->id_vp]);
     
        return view ('modulos.producto.listap')
        ->with('resultado',$resultado)

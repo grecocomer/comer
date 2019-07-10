@@ -16,6 +16,8 @@
 
 <script type="text/javascript">
 		$(document).ready(function(){
+
+            
 			
             $("#id_cat_producto").click(function() {
 				$("#id_prod").load('{{url('combopro')}}' + '?id_cat_producto=' + this.options[this.selectedIndex].value) ;
@@ -28,15 +30,16 @@
             });
 
             $("#cantidad").keyup(function() {
-                var Existencia;
+            var Existencia;
             var cantidad;
             Existencia = parseInt($("#Existencia").val());
             cantidad = parseInt($("#cantidad").val());
             if (cantidad>Existencia)
             {
-                $("#status").html('<div class="alert alert-danger" role="alert"><h6 class="alert-heading">Te la pelaste</h6></div>  '); 
+
+          $("#status").html('<div class="alert alert-danger" role="alert"><h6 class="alert-heading">No se puede</h6></div>  '); 
           $('#agrega').attr("disabled", true);
-            $('#total').val(0); 
+        
             
             
             }
@@ -44,34 +47,61 @@
             {
                 $("#status").html('<div class="alert alert-success" role="alert"><h6 class="alert-heading">Si se puede</h6></div>  '); 
                  $('#agrega').attr("disabled", false);
-              $('#total').val( $("#costo").val() *  $("#cantidad").val());
+      
               
             }
        });
 
        $("#cantidad").keyup(function() {
-        var costo = parseInt($("#costo").val());
-                   var cantidad =  parseInt($("#cantidad").val()); 
-                   var total =  $("#total").val(); 
-           
-            
-                cantidad = $("#cantidad").val();
-                       valor = $("#total").val();
-                       total1 = ((parseInt(costo)*parseInt(cantidad)));
 
-                       if(cantidad >= 5 ){
-                          valor = total1 - 100;
-                          $('#tip1').attr('disabled', false);
+                   var costo = parseInt($("#costo").val());
+                   var cantidad =  parseInt($("#cantidad").val()); 
+                   var cantidad1 =  $("#cantidad").val();      
+                   total1 = ((parseInt(costo)*parseInt(cantidad)));
+
+                       if(cantidad >= 5 )
+
+                       {
+
+                    $('#total').val(total1 -100);
+                    $('#tip1').attr('disabled', false);
 					$('#tip2').attr('disabled', true);
-					$("#tip1").prop("checked", true);
-                       }else{ 
-                           valor=total1;
-                           $('#tip1').attr('disabled', true);
-					$('#tip2').attr('disabled', false);
-					$("#tip2").prop("checked", true);
+                    $("#tip1").prop("checked", true);
+                    $("#tip2").prop("checked", false);
                        }
-                       $('#total').val(valor);
+
+                       else if (cantidad1 == "" )
+                       {
+
+                        $('#total').val(0);
+                        $("#status").html('<div class="alert alert-danger" role="alert"><h6 class="alert-heading">No se puede</h6></div>  '); 
+                        $('#agrega').attr("disabled", true);
+                        $('#tip1').attr('disabled', true);
+                        $('#tip2').attr('disabled', false);
+                        $("#tip2").prop("checked", true);
+                        $("#tip1").prop("checked", false);
+        
+
+                       }
+
+                       else
+
+                       { 
+
+                   
+                    $('#tip1').attr('disabled', true);
+					$('#tip2').attr('disabled', false);
+                    $("#tip2").prop("checked", true);
+                    $("#tip1").prop("checked", false);
+                    $('#total').val(total1);
+                       }
+
+                     
+                      
+                       
        });
+
+       
 
        $("#agrega").click(function() {
          $("#carrito").load('{{url('carrito')}}' + '?' + $(this).closest('form').serialize()) ;

@@ -58,7 +58,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group row">
+                                        <!--    <div class="form-group row">
                                                 <label class="col-lg-4 col-form-label" for=" Telefono"> Activo<span
                                                         class="text-danger">*</span></label>
                                                 @if($empresas->activo=='Si')
@@ -70,12 +70,12 @@
                                                 <input type='radio' name='activo' value='No' checked>No
                                                 @endif
                                             </div>
+                    </div>-->
+
+
+
+
                     </div>
-
-
-
-
-
 
 
                     <!--<a href="" class="btn btn-success">Modificar</a>-->

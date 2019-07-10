@@ -120,6 +120,9 @@ route::get('/altaempresa','conempresa@altaempresa');
 Route::POST('/guardaempresa','conempresa@guardaempresa')->name('guardaempresa');
 Route::get('/reporteempresa', 'conempresa@reporteempresa');
 
+Route::get('/confirmacion','conempresa@confirmacion')->name('confirmacion'); // Confirma el guardado de los datos
+Route::get('/inicio','conempresa@home')->name('home');
+
 
 // ruta para eliminar empresas con parametros id-emp
 Route::get('/eliminaem/{id_empresa}', 'conempresa@eliminaem')->name('eliminaem');

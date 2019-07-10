@@ -15,14 +15,45 @@ class conempresa extends Controller
 {
     // empresas
 
+    
+     //INICIO
+     public function confirmacion()
+     {
+             if( Session::get('sesionidu')!="")
+      {
+                 return view ('cliente.mensaje1');
+               }
+               else
+               {
+                 Session::flash('error', 'El usuario esta desactivado, favor de consultar a su administrador');
+               return redirect()->route('login');
+               }
+}
+
+public function home()
+{ 
+return view ('index');
+}
+
+
 public function altaempresa()
 {
   if(Session::get('sesionidu')!="")
 		{
-$clavequesigue = empresas::orderBy('id_empresa','desc')
+$clavequesigue = empresas::withTrashed()->orderBy('id_empresa','desc')
 ->take(1)
 ->get();
-$id_em = $clavequesigue[0]->id_empresa+1;
+
+if (count($clavequesigue)==0)
+{
+$id_em = 1;
+}
+else
+{
+$id_em= $clavequesigue[0]->id_empresa+1;
+}
+
+
 
 // DESPUES DE QUE VERIFICA TODOS LOS DATOS MANDA A LLAMAR A LA VISTA
 return view ('empresas.altaempresa')->with('id_empresas',$id_em);
@@ -52,14 +83,9 @@ public function guardaempresa(Request $request)
     $em -> id_empresa = $request->id_empresa;
     $em -> nombre_empresa = $request->nombre_empresa;
     $em -> tipo_empresa = $request->tipo_empresa;
-    $em-> activo = $request->activo;
     $em-> save();
 
-    $titulo = "ALTA DE EMPRESAS";
-    $mensaje1 = "El empresa fue guardado correctamente";
-    return view ("cliente.mensaje1")
-    ->with('titulo', $titulo)
-    ->with('mensaje1', $mensaje1);
+    return redirect()->route('confirmacion');
   }
   else
   {
@@ -83,7 +109,7 @@ public function guardaempresa(Request $request)
 //   rutas para mandar a llamar la vista 1.-carpeta 2.-nombre de la vista
 return view ('empresas.reporteempresa')->with('empresas',$res);
 
-/** 
+/*
 $articles = Article::oderBy('id_empresa','DESC')->paginate(5);
 $articles->each(function($articles){
   $articles->nom_empresa;
@@ -108,11 +134,7 @@ public function eliminaem($id_empresa)
 
  // echo "El cliente a eliminar es $id";
  empresas::find($id_empresa)->delete();
- $titulo = "Desactivar empresa";
- $mensaje1 = "La empresa a sido desactivado correctamente";
- return view ('cliente.mensaje1')
- ->with('titulo',$titulo)
- ->with('mensaje1',$mensaje1);
+ return redirect()->route('confirmacion');
 }
 else
 {
@@ -129,11 +151,7 @@ public function restaurarem($id_empresa)
       //echo "El maestro a eliminar es $idm";
       empresas::withTrashed()->where('id_empresa',$id_empresa)->restore();
      // find($idm)->delete();
-      $titulo = "Restaurar Empresa";
-      $mensaje1 = "La empresa a sido restaurado correctamente";
-      return view ('cliente.mensaje1')
-      ->with('titulo',$titulo)
-      ->with('mensaje1',$mensaje1);
+     return redirect()->route('confirmacion');
     }
     else
     {
@@ -165,8 +183,7 @@ public function restaurarem($id_empresa)
     $id_empresa = $request->id_empresa;
     $nombre_empresa = $request->nombre_empresa;
     $tipo_empresa = $request->tipo_empresa;
-    $activo = $request->activo;
-  
+ 
 
     //validaciones del formulario
 
@@ -182,14 +199,9 @@ public function restaurarem($id_empresa)
     $em -> id_empresa = $request->id_empresa;
     $em -> nombre_empresa = $request->nombre_empresa;
     $em -> tipo_empresa = $request->tipo_empresa;
-    $em-> activo = $request->activo;
     $em-> save();
 
-    $titulo = "ALTA DE EMPRESAS";
-    $mensaje1 = "El empresa fue guardado correctamente";
-    return view ("cliente.mensaje1")
-    ->with('titulo', $titulo)
-    ->with('mensaje1', $mensaje1);
+    return redirect()->route('confirmacion');
   }
   else
   {

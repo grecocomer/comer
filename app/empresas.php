@@ -9,7 +9,7 @@ class empresas extends Model
 {
     use SoftDeletes;
     protected $primaryKey = 'id_empresa';
-    protected $fillable = ['id_empresa', 'nombre_empresa','tipo_empresa','activo'];
+    protected $fillable = ['id_empresa', 'nombre_empresa','tipo_empresa'];
 
     protected $date=['deleted_at'];
 
