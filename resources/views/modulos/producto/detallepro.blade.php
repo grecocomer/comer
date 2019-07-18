@@ -40,7 +40,7 @@
         <label for="">Marca:</label>
     </div>
     <div class="col-md-2">
-        <input type="text" name="marca" id="marca" value='{{$productos->nomarc}}' readonly='readonly'
+        <input type="text" name="marca" id="marca" value='{{$marca->marca}}' readonly='readonly'
             class="form-control">
     </div>
 </div>

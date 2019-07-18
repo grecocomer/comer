@@ -48,10 +48,10 @@ public function home()
       // aqui esta el error
       // sirve para hacer que el cuadro de texto  siempre tenga el id lleno, siempre y cuando tengas tegristros
       // en la base de datos.
-      $clavequesigue = clientes::withTrashed()->orderBy('id','desc')
+      $clavequesigue = clientes::withTrashed()->orderBy('idc','desc')
       ->take(1)
       ->get();
-       $idc = $clavequesigue[0]->id+1;
+       $idc = $clavequesigue[0]->idc+1;
 
        //muestra el combo con los datos activos en la base de datos.
       $estados = estados::where('activo','si')
@@ -75,7 +75,7 @@ return view ('cliente.altacliente')
 
     public function guardacliente(Request $request)
     {
-      $id = $request->idcli;
+      $idc = $request->idcli;
       $nombrecli = $request->nombrecli;
       $apacli = $request->apacli;
       $amacli = $request->amacli;
@@ -131,7 +131,7 @@ return view ('cliente.altacliente')
       // insertar datos
       $cli = new clientes;
     //  $cli -> archivo =$img2;
-      $cli ->id = $request->id;
+      $cli ->idc = $request->id;
       $cli ->nombrecli = $request->nombrecli;
       $cli ->apacli = $request->apacli;
       $cli ->amacli = $request->amacli;
@@ -160,7 +160,7 @@ return view ('cliente.altacliente')
     //  $clientes = clientes::orderBy('nombrecli','asc')->get();
     // return view ('cliente.reportecli')->with('clientes',$clientes);
     
-      $res=\DB::select("SELECT c.id, 
+      $res=\DB::select("SELECT c.idc, 
       c.nombrecli, 
       c.apacli,
        c.amacli, 
@@ -180,12 +180,12 @@ return view ('cliente.altacliente')
     }
     }
 
-    public function eliminac($id)
+    public function eliminac($idc)
     {
       if(Session::get('sesionidu')!="")
 		{
      // echo "El cliente a eliminar es $id";
-     clientes::find($id)->delete();
+     clientes::find($idc)->delete();
      return redirect()->route('confirmacion');
     }
     else
@@ -196,12 +196,12 @@ return view ('cliente.altacliente')
      
     }
     // funcion para desactivar registros
-    public function restaurarc($id)
+    public function restaurarc($idc)
     {
       if(Session::get('sesionidu')!="")
 		{
       //echo "El maestro a eliminar es $idm";
-      clientes::withTrashed()->where('id',$id)->restore();
+      clientes::withTrashed()->where('idc',$idc)->restore();
      // find($idm)->delete();
      
       return redirect()->route('confirmacion');
@@ -214,12 +214,12 @@ return view ('cliente.altacliente')
     }
 
 
-    public function modificac($id)
+    public function modificac($idc)
     {
       if(Session::get('sesionidu')!="")
 		{
      // echo "Cliente modificado $id";
-     $cliente = clientes::where('id','=',$id)->get();
+     $cliente = clientes::where('idc','=',$idc)->get();
      $id_es=$cliente[0]->id_es;
      $estado = estados::where('id_es','=',$id_es)->get();
      $demas = estados::where('id_es','!=',$id_es)->get();
@@ -244,7 +244,7 @@ return view ('cliente.altacliente')
     {
       if(Session::get('sesionidu')!="")
 		{
-      $id = $request->id;
+      $idc = $request->id;
       $nombrecli = $request->nombrecli;
       $apacli = $request->apacli;
       $amacli = $request->amacli;
@@ -294,8 +294,8 @@ return view ('cliente.altacliente')
     }
 
     // insertar datos
-    $cli = clientes::find($id);
-    $cli->id= $request->id;
+    $cli = clientes::find($idc);
+    $cli->idc= $request->id;
     if ($file!="")
     {
       $cli->Archivo=$img2;

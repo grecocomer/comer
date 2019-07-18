@@ -17,7 +17,14 @@
 <script type="text/javascript">
 		$(document).ready(function(){
 
-            
+            function trunc (x, posiciones = 0) {
+  var s = x.toString()
+  var l = s.length
+  var decimalLength = s.indexOf('.') + 1
+  var numStr = s.substr(0, decimalLength + posiciones)
+  return Number(numStr)
+
+        }    
 			
             $("#id_cat_producto").click(function() {
 				$("#id_prod").load('{{url('combopro')}}' + '?id_cat_producto=' + this.options[this.selectedIndex].value) ;
@@ -39,6 +46,7 @@
 
           $("#status").html('<div class="alert alert-danger" role="alert"><h6 class="alert-heading">No se puede</h6></div>  '); 
           $('#agrega').attr("disabled", true);
+          $('#subt').val(0);
         
             
             
@@ -46,66 +54,53 @@
             else
             {
                 $("#status").html('<div class="alert alert-success" role="alert"><h6 class="alert-heading">Si se puede</h6></div>  '); 
-                 $('#agrega').attr("disabled", false);
+                $('#agrega').attr("disabled", false);
+                $('#subt').val( $("#costo").val() * $("#cantidad").val());
+
       
               
             }
        });
 
-       $("#cantidad").keyup(function() {
-
-                   var costo = parseInt($("#costo").val());
-                   var cantidad =  parseInt($("#cantidad").val()); 
-                   var cantidad1 =  $("#cantidad").val();      
-                   total1 = ((parseInt(costo)*parseInt(cantidad)));
-
-                       if(cantidad >= 5 )
-
-                       {
-
-                    $('#total').val(total1 -100);
-                    $('#tip1').attr('disabled', false);
-					$('#tip2').attr('disabled', true);
-                    $("#tip1").prop("checked", true);
-                    $("#tip2").prop("checked", false);
-                       }
-
-                       else if (cantidad1 == "" )
-                       {
-
-                        $('#total').val(0);
-                        $("#status").html('<div class="alert alert-danger" role="alert"><h6 class="alert-heading">No se puede</h6></div>  '); 
-                        $('#agrega').attr("disabled", true);
-                        $('#tip1').attr('disabled', true);
-                        $('#tip2').attr('disabled', false);
-                        $("#tip2").prop("checked", true);
-                        $("#tip1").prop("checked", false);
+      
+       $("input[name=descuento]").click(function () {
+        switch ($('input:radio[name=descuento]:checked').val()) { 
+	    case '0': 
+          $("#des").val(parseInt($("#subt").val())*0,6);
+		break;
+		case '10': 
+          $("#des").val(trunc(parseInt($("#subt").val())*0.10,6));
+		break;
+	    case '30': 
+          $("#des").val(trunc(parseInt($("#subt").val())*0.30,6));
+		break;
+          }
+        });
         
 
-                       }
 
-                       else
-
-                       { 
-
-                   
-                    $('#tip1').attr('disabled', true);
-					$('#tip2').attr('disabled', false);
-                    $("#tip2").prop("checked", true);
-                    $("#tip1").prop("checked", false);
-                    $('#total').val(total1);
-                       }
-
-                     
-                      
-                       
-       });
-
-       
+    
+      $("input[name=descuento]").click(function () {
+        switch ($('input:radio[name=descuento]:checked').val()) { 
+      case '0': 
+          $("#subto").val($("#subt").val()-$("#des").val());
+    break;
+    case '10': 
+          $("#subto").val($("#subt").val()-$("#des").val());
+    break;
+      case '30': 
+         $("#subto").val($("#subt").val()-$("#des").val());
+    break;
+          }
+        });
 
        $("#agrega").click(function() {
-         $("#carrito").load('{{url('carrito')}}' + '?' + $(this).closest('form').serialize()) ;
+	   $("#Existencia").val($("#Existencia").val()-$("#cantidad").val());	
+       $("#carrito").load('{{url('carrito')}}' + '?' + $(this).closest('form').serialize()) ;
+		
        });
+
+      
 
 		});
 
@@ -140,8 +135,11 @@
                         <label for="">Nombre Cliente:</label>
                     </div>
                     <div class="col-md-2">
-                    <input name="id" id="id" value="{{Session::get('sesionidu')}}" class="form-control"  readonly = 'readonly'>
-                    <!-- <input type="text" name="cli" id="cli" class="form-control">-->
+                    <select name='idcl' id='idcl' class="form-control">
+                    @foreach($clientes as $cli)
+                    <option value = '{{$cli->idc}}'>{{$cli->nombrecli}}</option>
+                    @endforeach
+                    </select>
                     </div>
                 </div>
 
@@ -196,9 +194,12 @@
         <label for="">Existencia:</label>
     </div>
     <div class="col-md-2">
-        <input type="text" name="Existencia" id="Existencia"  readonly='readonly'
+        <input type="text" name="Existencia" id="Existencia" readonly='readonly'
             class="form-control">
+           
     </div>
+  
+
     <div class="col-md-2">
         <label for="">Precio:</label>
     </div>
@@ -215,6 +216,7 @@
     </div>
 </div>     
                         </div>  
+                       
 
                 <div class="row mt-4 ">
                 <div class="col-md-2">
@@ -224,35 +226,43 @@
                         <input type="text" name="cantidad" id="cantidad" class="form-control">
                     </div>
                     <div class="col-md-2">
-                        <label for="">Total:</label>
+                        <label for="">Descuento:</label>
                     </div>
                     <div class="col-md-2">
-                        <input type="text" name="total" id="total" readonly='readonly' class="form-control">
+                         <input type = 'hidden' name ='subt' id = 'subt'>
+                        <input type = 'text' name ='des' id = 'des' readonly='readonly' class="form-control">
                     </div>
+
+                    <div class="col-md-2">
+                        <label for="">Subtotal:</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input type = 'text' name ='subto' id = 'subto' readonly='readonly' class="form-control">
+                    </div>
+                    </div>
+                    <br>
+                    <div align="center">
                     <div class="col-md-1">
                         <label for="">Valorar:</label>
                     </div>
                     <div class="col-md-3" id="status">
                     
                     </div>
-                     
-                <br>
-                <br>
+                  
+                    
+              
                 <br>
                 <div id="rad" class="mx-auto" style="width: 200px;" >
-			<input type="radio" name="tip1" id="tip1">Si Descuento
-            <br>
-            <br>
-            <input type="radio" name="tip2" id="tip2">No Descuento
+                <label for="">Descuento:</label>
+            <input type = 'radio' value = '0' name = 'descuento' id = 'descuento1' checked>0%
+            <input type = 'radio' value = '10' name = 'descuento' id = 'descuento2'>10%
+            <input type = 'radio' value = '30' name = 'descuento' id = 'descuento3'>30%
 		     </div>
                 <br>
-                <br>
-                <br>
-                <br>
-
+               
                     <button type="button" class="btn btn-primary btn-lg btn-block" name = "agrega" id="agrega" disabled= 'false'>Agrega Carrito</button>
 
-
+            
                     
 
                     </div>
@@ -262,9 +272,11 @@
     </div>
 
 
-    <div id='carrito'>
-</div>
-    
+                <div id='carrito' align="center">
+               </div>
+                
+           
+                
     </form>
  
 <div>

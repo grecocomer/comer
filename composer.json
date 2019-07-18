@@ -9,7 +9,8 @@
         "laravel/framework": "5.2.*",
         "jenssegers/date": "^3.5",
         "carbondate/carbon": "^1.33",
-        "nesbot/carbon": "^2.16"
+        "nesbot/carbon": "^2.16",
+        "paypal/rest-api-sdk-php": "^1.14"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

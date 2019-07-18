@@ -146,6 +146,7 @@ Route::get('/combopro','moproducto@combopro')->name('combopro');
 Route::get('/detallep','moproducto@detallep')->name('detallep');
 Route::get('/carrito','moproducto@carrito')->name('carrito');
 Route::get('/borraventas','moproducto@borraventas')->name('borraventas');
+Route::get('/restuara','moproducto@restaura')->name('restaura');
 
 //modulos servicio
 Route::get('/venta_s','moservicio@venta_s')->name('venta_s');
@@ -153,6 +154,8 @@ Route::get('/comboser','moservicio@comboser')->name('comboser');
 Route::get('/detalles','moservicio@detalles')->name('detalles');
 Route::get('/carritos','moservicio@carritos')->name('carritos');
 Route::get('/borraventass','moservicio@borraventass')->name('borraventass');
+
+
 
 
 
