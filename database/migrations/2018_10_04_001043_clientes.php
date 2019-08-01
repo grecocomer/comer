@@ -10,7 +10,7 @@ class Clientes extends Migration
         Schema::create('clientes', function (Blueprint $table)
     {
          // llave primaria incremets
-         $table->increments('id');
+         $table->increments('idc');
          $table->string('nombrecli',40);
          $table->string('apacli',40);
          $table->string('amacli',40);

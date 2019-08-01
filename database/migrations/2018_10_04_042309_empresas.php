@@ -13,7 +13,6 @@ class Empresas extends Migration
             $table->increments('id_empresa');
             $table->string('nombre_empresa',50);
             $table->string('tipo_empresa',50);
-            $table->string('activo',2);
             $table->timestamp('deleted_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -23,7 +23,6 @@ class Proveedores extends Migration
          $table->integer('no_int');
          $table->string('col_prov',40);
          $table->string('loca_prov',40);
-         $table->string('esta_prov',40);
          $table->integer('cp');
          $table->integer('id_es')->unsigned();
          $table->foreign('id_es')->references('id_es')->on('estados');

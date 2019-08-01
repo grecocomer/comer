@@ -14,10 +14,11 @@ class Productos extends Migration
          $table->string('nombre_prod',40);
          $table->string('archivo',255);
          $table->string('descripcion_prod',40);
-         $table->string('Existencia');
-         $table->string('costo');
+         $table->string('Existencia',50);
+         $table->string('tipo',20);
+         $table->string('costo',50);
          $table->integer('u_m');
-         $table->string('contenido');
+         $table->string('contenido',255);
          $table->string('activo',2);
          $table->integer('id_marca')->unsigned();
          $table->foreign('id_marca')->references('id_marca')->on('marcaproductos');
