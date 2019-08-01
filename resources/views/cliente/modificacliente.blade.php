@@ -7,7 +7,7 @@
 
     <head>
 
-        <title> Alta Cliente</title>
+        <title> Modificar Cliente</title>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <script src="main.js"></script>
@@ -36,9 +36,9 @@
                                 @endif
 
                                 <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="id">Id: <span class="text-danger">*</span></label>
+                                    <label class="col-lg-4 col-form-label" for="idc">Id: <span class="text-danger">*</span></label>
                                     <div class="col-lg-6">
-                                        <input class="form-control" id="id" type='text' name='id' value="{{$clientes->id}}"
+                                        <input class="form-control" id="id" type='text' name='id' value="{{$clientes->idc}}"
                                             readonly='readonly'>
                                     </div>
                                 </div>

@@ -168,10 +168,12 @@ return view ('cliente.altacliente')
        c.correocli,
       c.telcli, 
       c.genero,
-      c.cp, g.estado as esta, c.deleted_at FROM clientes as c INNER JOIN estados as g ON c.id_es = g.id_es");
+      c.cp, g.estado as esta, c.deleted_at 
+      FROM clientes as c INNER JOIN estados as g ON c.id_es = g.id_es");
 
    //   rutas para mandar a llamar la vista 1.-carpeta 2.-nombre de la vista
-     return view ('cliente.reportecli')->with('clientes',$res);
+     return view ('cliente.reportecli')
+     ->with('clientes',$res);
     }
     else
     {

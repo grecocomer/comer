@@ -28,13 +28,13 @@ Route::get('/inicio','concliente@home')->name('home');
 // ruta para reportes.
 Route::get('/reporteclientes', 'concliente@reporteclientes');
 // ruta para eliminar cliente con parametros idm
-Route::get('/eliminac/{id}', 'concliente@eliminac')->name('eliminac');
+Route::get('/eliminac/{idc}', 'concliente@eliminac')->name('eliminac');
 //modificar cliente
-Route::get('/modificac/{id}', 'concliente@modificac')->name('modificac');
+Route::get('/modificac/{idc}', 'concliente@modificac')->name('modificac');
 //guarda los nuevos datos modificados
 Route::POST('/guardaedicionc', 'concliente@guardaedicionc')->name('guardaedicionc');
 //eliminacion solo para desactivar
-Route::get('/restaurarc/{id}', 'concliente@restaurarc')->name('restaurarc');
+Route::get('/restaurarc/{idc}', 'concliente@restaurarc')->name('restaurarc');
 
 
 
@@ -155,10 +155,9 @@ Route::get('/detalles','moservicio@detalles')->name('detalles');
 Route::get('/carritos','moservicio@carritos')->name('carritos');
 Route::get('/borraventass','moservicio@borraventass')->name('borraventass');
 
-
-
-
-
-
-
-
+//paypal
+Route::get('payment-status',array('as'=>'payment.status','uses'=>'PaymentController@paymentInfo'));
+Route::get('payment',array('as'=>'payments','uses'=>'PaymentController@payment'));
+Route::get('payment-cancel', function () {
+   return 'Payment has been canceled';
+});

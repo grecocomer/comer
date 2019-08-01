@@ -47,7 +47,7 @@
                             <tbody>
                                 @foreach($clientes as $cli)
                                 <tr>
-                                    <td>{{$cli->id}}</td>
+                                    <td>{{$cli->idc}}</td>
                                     <td>{{$cli->nombrecli}}</td>
                                     <td>{{$cli->apacli}}</td>
                                     <td>{{$cli->amacli}}</td>
@@ -62,7 +62,7 @@
                                         @if($cli->deleted_at=="")
                                         @if (Session::get('sesiontipo')=="Admin")
                                         <button type="button" class="btn btn-default btn-xs">
-                                        <a href="{{URL::action('concliente@modificac',['id'=>$cli->id])}}">
+                                        <a href="{{URL::action('concliente@modificac',['idc'=>$cli->idc])}}">
                                         <i class="fa fa-edit">
                                             Modificar
                                             </i>
@@ -70,7 +70,7 @@
                                         </button>
                                         
                                         <button type="button" class="btn btn-default btn-xs">
-                                        <a href="{{URL::action('concliente@eliminac',['id'=>$cli->id])}}">
+                                        <a href="{{URL::action('concliente@eliminac',['idc'=>$cli->idc])}}">
                                         <i class="fa fa-trash">
                                             Elimina
                                             </i>
@@ -82,7 +82,7 @@
                                         @else
                                         @if (Session::get('sesiontipo')=="Admin")
                                         <button type="button" class="btn btn-default btn-xs">
-                                        <a href="{{URL::action('concliente@restaurarc',['id'=>$cli->id])}}">
+                                        <a href="{{URL::action('concliente@restaurarc',['idc'=>$cli->idc])}}">
                                         <i class="fa fa-upload">
                                             Restaurar
                                             </i>

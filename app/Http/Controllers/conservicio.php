@@ -52,11 +52,20 @@ public function altaservicio()
 $clavequesigue = servicios::withTrashed()->orderBy('id_ser','desc')
 ->take(1)
 ->get();
-$ids = $clavequesigue[0]->id_ser+1;
+
+
+if (count($clavequesigue)==0)
+{
+$ids = 1;
+}
+else
+{
+$ids= $clavequesigue[0]->id_ser+1;
+}
+
 
 //muestra el combo con los datos activos en la base de datos.
-$empresas = empresas::where('activo','si')
-->orderBy('nombre_empresa','asc')
+$empresas = empresas::withTrashed()->orderBy('nombre_empresa','asc')
 ->get();
 
 $empleados = empleados::withTrashed()->orderBy('nombre_emp','asc')
@@ -106,9 +115,9 @@ $ser ->costo = $request->costo;
 $ser->fecha_solicitud_ser = $request->fecha_solicitud_ser;
 $ser->fecha_inicio_ser = $request->fecha_inicio_ser;
 $ser->fecha_fin_ser = $request->fecha_fin_ser;
-$ser->id_empresa = $request -> id_empresa;
-$ser->id_emp = $request -> id_emp;
-$ser->id_cat_ser = $request -> id_cat_ser;
+$ser->id_empresa = $request->id_empresa;
+$ser->id_emp = $request->id_emp;
+$ser->id_cat_ser = $request->id_cat_ser;
 $ser-> save();
 
 
